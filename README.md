@@ -250,3 +250,5 @@ The ipsets will remain intact upon reboot so if you decide to run the scripts ag
 
 Thanks for running a relay,
 Cheers.
+
+Inspired by some of the @toralf iptables rules, adding a few twists.
