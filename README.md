@@ -252,4 +252,4 @@ Thanks for running a relay,
 
 Cheers.
 
-**Inspired by some of the @toralf iptables rules, adding a few twists.**
+**Inspired by @toralf iptables rules, adding a few twists.**
