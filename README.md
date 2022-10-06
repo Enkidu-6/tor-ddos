@@ -40,7 +40,7 @@ It will only increase the load on your system and don't blame me if they come ba
 
 # tor-ddos The long version
 
-Iâ€™m putting this together in response to some people who are looking for something simple that anyone regardless of their level of expertise can implement. Something that doesnâ€™t require a lot of time. No scripts, just mostly plain text and as simple as copy and paste if you want to.
+I'm putting this together in response to some people who are looking for something simple that anyone regardless of their level of expertise can implement. Something that doesn't require a lot of time. No scripts, just mostly plain text and as simple as copy and paste if you want to.
 
 # First step: Preparing your system for high number of connections:
 
@@ -67,9 +67,9 @@ Use your favorite text editor such as vi or nano as follows:
 **net.ipv4.tcp_max_tw_buckets = 5000** 
 
 
-Some of these options may already be in your sysctl.conf so please remember, **edit but donâ€™t duplicate.**
+Some of these options may already be in your sysctl.conf so please remember, **edit but don't duplicate.**
 
-Once youâ€™re done with adding and editing, save the file and type:
+Once you're done with adding and editing, save the file and type:
 
 **/sbin/sysctl -p**
 
@@ -113,14 +113,14 @@ The maximum number of TIME_WAIT sockets maintained at the same time. If this num
 
 # iptables, What we should know:
 
-Most Linux systems come with some sort of firewall such as firewalld, ufw, etc.. These firewalls are generally just a management front-end to the iptables with some additional commands of their own which are generally saved in a separate file, which means if you clear all the iptables rules, youâ€™d still retain the rules you set in your firewall. Things like opening a port for example. However since weâ€™re going to clear all the iptables rules, donâ€™t just trust me, verify. Check your firewall after clearing the iptables to make sure the firewall rules are still there and if not, youâ€™ll need to add them again.
+Most Linux systems come with some sort of firewall such as firewalld, ufw, etc.. These firewalls are generally just a management front-end to the iptables with some additional commands of their own which are generally saved in a separate file, which means if you clear all the iptables rules, you'd still retain the rules you set in your firewall. Things like opening a port for example. However since we're going to clear all the iptables rules, don't just trust me, verify. Check your firewall after clearing the iptables to make sure the firewall rules are still there and if not, you'll need to add them again.
 
-Practically all linux systems come with iptables or more recently with nftables which basically does the same and more. So you wonâ€™t need to install iptables. Just type **iptables -V** . If you see a version, you have it. The same with ipset . An **ipset -v** will do the job. In some rare cases you may not have ipset installed and installing it is as simple as **apt-get ipset** or **yum install ipset** or...
+Practically all linux systems come with iptables or more recently with nftables which basically does the same and more. So you won't need to install iptables. Just type **iptables -V** . If you see a version, you have it. The same with ipset . An **ipset -v** will do the job. In some rare cases you may not have ipset installed and installing it is as simple as **apt-get ipset** or **yum install ipset** or...
 
 
-Last but not least, in most examples of iptables rules that you see, you donâ€™t see a mention of a **â€œtableâ€** or **-t** where our rules reside. When you donâ€™t mention a table, all rules will go to the default table which is **filter** and thatâ€™s all good and fine and will do the job well. However, in order for the filter to work, you first have to have a connection. Accepting connections and then denying and cleaning up after them wastes a lot of resources.
+Last but not least, in most examples of iptables rules that you see, you don't see a mention of a **â€œtableâ€** or **-t** where our rules reside. When you don't mention a table, all rules will go to the default table which is **filter** and that's all good and fine and will do the job well. However, in order for the filter to work, you first have to have a connection. Accepting connections and then denying and cleaning up after them wastes a lot of resources.
 
-Controlled lab tests clearly show that when using **iptables INPUT** with **filter** table, one CPU at 100% can process about 600,000 packets per second. The same exact CPU when **iptables PREROUTING** is used can process almost 1.7 Million packets per second. So since every bit of CPU counts, Weâ€™re going to use **PREROUTING in the mangle table**. You can use **raw** table as well but raw table doesnâ€™t recognize a lot of filter rules but mangle understands raw rules, filter rules PREROUTING rules and more, which means we can use what we already know and are familiar with and add a few things too.
+Controlled lab tests clearly show that when using **iptables INPUT** with **filter** table, one CPU at 100% can process about 600,000 packets per second. The same exact CPU when **iptables PREROUTING** is used can process almost 1.7 Million packets per second. So since every bit of CPU counts, We're going to use **PREROUTING in the mangle table**. You can use **raw** table as well but raw table doesn't recognize a lot of filter rules but mangle understands raw rules, filter rules PREROUTING rules and more, which means we can use what we already know and are familiar with and add a few things too.
 
 
 # Finally, the rules:
@@ -135,7 +135,7 @@ iptables -X
 iptables -Z
 
 ```
-The above commands will first save the original rules for backup and then clear all iptables rules so nothing can conflict with our rules. It basically sets everything to accept. Youâ€™re now wide open.
+The above commands will first save the original rules for backup and then clear all iptables rules so nothing can conflict with our rules. It basically sets everything to accept. You're now wide open.
 
 P.S.
 
@@ -184,9 +184,9 @@ echo 20 > /proc/sys/net/ipv4/tcp_fin_timeout
 modprobe xt_recent ip_list_tot=10000
 ```
 
-Just in case you didnâ€™t want to edit your **sysctl.conf**. You should at least do these three lines. The last one is important because when you are keeping track of connections, by default linux keeps track of 100 of them at most and then replaces them with new connections. We want to keep a longer list so we increase it to 10000.
+Just in case you didn't want to edit your **sysctl.conf**. You should at least do these three lines. The last one is important because when you are keeping track of connections, by default linux keeps track of 100 of them at most and then replaces them with new connections. We want to keep a longer list so we increase it to 10000.
 
-The reason I didnâ€™t do this on top of the page is because when your iptables is not cleared, there might be rules that are using it and it keeps a lock on this file therefore editing it would not be easily possible.
+The reason I didn't do this on top of the page is because when your iptables is not cleared, there might be rules that are using it and it keeps a lock on this file therefore editing it would not be easily possible.
 
 
 
@@ -201,7 +201,7 @@ iptables -A INPUT --in-interface lo -j ACCEPT
 iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
 ```
 
-Weâ€™re allowing existing connections to do what they need to do without interference and allow local communications while at the same time denying invalid connections.
+We're allowing existing connections to do what they need to do without interference and allow local communications while at the same time denying invalid connections.
 
 ***Please note that the following rules assume your Orport is 443. If you are listening on a different port replace 443 with your own.***
 
@@ -240,7 +240,7 @@ Dropping any attempt by those in our ddos list
 Accept everyone else.
 
 
-Thatâ€™s it. Just remember, anytime you reload your firewall, all these iptables rules are erased. At least Iâ€™m sure thatâ€™s what happens with firewall-cmd --reload. Also a reboot will reset your iptables rules to default rules that came with your system.  Nevertheless we save the original rules so we can restore them with the following command if anything goes wrong:
+That's it. Just remember, anytime you reload your firewall, all these iptables rules are erased. At least I'm sure that's what happens with firewall-cmd --reload. Also a reboot will reset your iptables rules to default rules that came with your system.  Nevertheless we save the original rules so we can restore them with the following command if anything goes wrong:
 
 ```
 iptables-restore < /var/tmp/iptablesRules.v4
