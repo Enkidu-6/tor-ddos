@@ -28,7 +28,7 @@ Both files make a backup of your original iptables and ip6tables rules. You can 
 
 run **compare.sh** file ( wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/compare.sh ) to simply check the block list against the list of all tor relays. It will display the IP addresses in the block list that are also a tor relay. You will always have a few relays in the list. Trapping 10 or 20 relays out of over 6500 in my view is inconsequential and will have no ill effect on the opertion of tor network or your relay. 
 
-They are one of the reasons this ddos campaign is so successful because they accept all those concurrent connections and pass them on to all other relays. The alternative would be to let them in and have a few hundred bad actors come in with them. They stay in the list for a maximum of 12 hours and then released, unless they break the rules again.
+Unfortunately they accept all those concurrent connections and pass them on to all other relays. The alternative would be to let them in and have a few hundred bad actors come in with them. They stay in the list for a maximum of 12 hours and then released, unless they break the rules again.
 
 Nevertheless if you want to remove them, you can either do that individually by simply typing:
 
