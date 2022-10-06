@@ -1,6 +1,6 @@
 # TLDR Version
 
-If you don't want to read the rest just run iptables.sh and ip6tables.sh . They're really not scripts, just a series of commands and iptables rules one after another. You can even copy the content and just paste them in the terminl. You must be root or run the script using sudo. ***It assumes your ORPort is 443. If you're listening on another port, change 443 to whatever port you're listening on before running the script*** otherwise all these rules will be useless to you.
+If you don't want to read the rest just run **iptables.sh** and **ip6tables.sh** . They're really not scripts, just a series of commands and iptables rules one after another. You can even copy the content and just paste them in the terminl. You must be root or run the script using sudo. ***It assumes your ORPort is 443. If you're listening on another port, change 443 to whatever port you're listening on before running the script*** otherwise all these rules will be useless to you.
 
 **wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/iptables.sh**
 
