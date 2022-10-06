@@ -118,7 +118,7 @@ Most Linux systems come with some sort of firewall such as firewalld, ufw, etc..
 Practically all linux systems come with iptables or more recently with nftables which basically does the same and more. So you won't need to install iptables. Just type **iptables -V** . If you see a version, you have it. The same with ipset . An **ipset -v** will do the job. In some rare cases you may not have ipset installed and installing it is as simple as **apt-get ipset** or **yum install ipset** or...
 
 
-Last but not least, in most examples of iptables rules that you see, you don't see a mention of a **â€œtableâ€** or **-t** where our rules reside. When you don't mention a table, all rules will go to the default table which is **filter** and that's all good and fine and will do the job well. However, in order for the filter to work, you first have to have a connection. Accepting connections and then denying and cleaning up after them wastes a lot of resources.
+Last but not least, in most examples of iptables rules that you see, you don't see a mention of a **table** or **-t** where our rules reside. When you don't mention a table, all rules will go to the default table which is **filter** and that's all good and fine and will do the job well. However, in order for the filter to work, you first have to have a connection. Accepting connections and then denying and cleaning up after them wastes a lot of resources.
 
 Controlled lab tests clearly show that when using **iptables INPUT** with **filter** table, one CPU at 100% can process about 600,000 packets per second. The same exact CPU when **iptables PREROUTING** is used can process almost 1.7 Million packets per second. So since every bit of CPU counts, We're going to use **PREROUTING in the mangle table**. You can use **raw** table as well but raw table doesn't recognize a lot of filter rules but mangle understands raw rules, filter rules PREROUTING rules and more, which means we can use what we already know and are familiar with and add a few things too.
 
@@ -208,7 +208,7 @@ We're allowing existing connections to do what they need to do without interfere
 ```
 iptables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list src -j ACCEPT
 
-iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m recent --name tor-ddos â€“set
+iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m recent --name tor-ddos --set
 
 iptables -t mangle -A PREROUTING -p tcp --syn --dport 443 -m conntrack --ctstate NEW -m hashlimit --hashlimit-name TOR --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 3/sec --hashlimit-burst 4 --hashlimit-htable-expire 3500 -j SET --add-set persec src
 
