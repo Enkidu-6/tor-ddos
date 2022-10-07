@@ -4,6 +4,7 @@ ip6tables-save > /var/tmp/ip6tablesRules.v4
 ip6tables -F
 ip6tables -X
 ip6tables -Z
+ip6tables -t mangle -F
 # Change this number to your own ORPort if it's not 443
 ORPort=443
 ip6tables -A INPUT --match conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
