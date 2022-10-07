@@ -4,6 +4,8 @@ iptables-save > /var/tmp/iptablesRules.v4
 iptables -F
 iptables -X
 iptables -Z
+# Flush mangle as well. Important if running the script for the second time.
+iptables -t mangle -F
 sysctl net.ipv4.ip_local_port_range="10000 65000"
 echo 20 > /proc/sys/net/ipv4/tcp_fin_timeout
 modprobe xt_recent ip_list_tot=10000
