@@ -25,6 +25,12 @@ Both files make a backup of your original iptables and ip6tables rules. You can 
 **ipset destroy**
 
 
+To see how many IP addresses are caught in the block list and per second list at any time you can type:
+
+**ipset -L tor-ddos**
+
+**ipset -L persec**
+
 
 run **compare.sh** file ( wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/compare.sh ) to simply check the block list against the list of all tor relays. It will display the IP addresses in the block list that are also a tor relay. You will always have a few relays in the list. Trapping 10 or 20 relays out of over 6500 in my view is inconsequential and will have no ill effect on the opertion of tor network or your relay. 
 
