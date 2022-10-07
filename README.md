@@ -97,6 +97,8 @@ Enables reuse. Allowing TIME-WAIT sockets to be reused for a new TCP connection.
 **net.ipv4.tcp_tw_recycle = 1**
 
 Enables the quick recall of TIME-WAIT sockets in TCP connection.
+Okay to not sure or ignore the error, "sysctl: cannot stat /proc/sys/net/ipv4/tcp_tw_recycle: No such file or directory"
+Removed in Linux kernel 4.12 in 2017.  For more details: https://djangocas.dev/blog/troubleshooting-tcp_tw_recycle-no-such-file-or-directory/#analysis
 
 **net.ipv4.ip_local_port_range = 10000 65000**
 
