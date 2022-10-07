@@ -58,8 +58,6 @@ Use your favorite text editor such as vi or nano as follows:
 
 **net.ipv4.tcp_tw_reuse = 1**
 
-**net.ipv4.tcp_tw_recycle = 1**
-
 **net.ipv4.ip_local_port_range = 10000 65000**
 
 **net.ipv4.tcp_max_syn_backlog = 8192**
@@ -93,10 +91,6 @@ Turning Syn cookies on. When Syn waiting queue overflows, cookies are turned on 
 **net.ipv4.tcp_tw_reuse = 1**
 
 Enables reuse. Allowing TIME-WAIT sockets to be reused for a new TCP connection.
-
-**net.ipv4.tcp_tw_recycle = 1**
-
-Enables the quick recall of TIME-WAIT sockets in TCP connection.
 
 **net.ipv4.ip_local_port_range = 10000 65000**
 
