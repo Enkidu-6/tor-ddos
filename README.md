@@ -16,7 +16,11 @@ If you don't want to read the rest just run **iptables.sh** and **ip6tables.sh**
 
 That's it. You're good to go.
 
-Both files make a backup of your original iptables and ip6tables rules. You can restore the original rules by either simply rebooting or running the following commands:
+If you have two instances of Tor running on the same system with two ORPorts run
+
+**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/2or-v4.sh**
+
+All scripts make a backup of your original iptables and ip6tables rules. You can restore the original rules by either simply rebooting or running the following commands:
 
 **iptables-restore < /var/tmp/iptablesRules.v4**
 
