@@ -18,9 +18,11 @@ That's it. You're good to go.
 
 If you have two instances of Tor running on the same system with two ORPorts run
 
-**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/2or-v4.sh**
+**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/2or-v4.sh** and
 
-All scripts make a backup of your original iptables and ip6tables rules. You can restore the original rules by either simply rebooting or running the following commands:
+**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/2or-v6.sh**
+
+Both IPV4 versions of the scripts make a backup of your original iptables and ip6tables rules so run them first before you run the IPV6 version. You can restore the original rules by either simply rebooting or running the following commands:
 
 **iptables-restore < /var/tmp/iptablesRules.v4**
 
