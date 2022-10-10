@@ -2,6 +2,6 @@
 # set -x
 ipset -L tor2-ddos | awk '{print $1}' > /var/tmp/file3
 ipset -L persec2 | awk '{print $1}' >> /var/tmp/file3
-curl https://lists.fissionrelays.net/tor/relays-ipv4.txt > /var/tmp/file2
+curl https://wcbsecurity.com/relays.txt > /var/tmp/file2
 cd /var/tmp
 perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  file3 file2
