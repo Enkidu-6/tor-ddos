@@ -30,6 +30,18 @@ Both versions of the scripts make a backup of your original iptables and ip6tabl
 
 **ipset destroy**
 
+If you are running Tor on a VM and have access to the host e.g KVM, Proxmox, etc... you can run the iptables on the host and have all the packets filtered using the Host's resources before they are forwarded to the VM. This will allow your VM to use all the resources available to it for running Tor without spending any resources on filtering. In that case use:
+
+**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/iptables-host.sh** 
+
+**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/ip6tables-host.sh**  
+
+or in case of having two OR ports:
+
+**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/2or-v4-host.sh**
+
+**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/2or-v6-host.sh**
+
 
 To see how many IP addresses are caught in the block list and per second list at any time you can type:
 
