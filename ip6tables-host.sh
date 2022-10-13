@@ -13,6 +13,7 @@ ipset add -exist allow-list6 2001:858:2:2:aabb:0:563b:1526
 ipset add -exist allow-list6 2607:8500:154::3
 ipset add -exist allow-list6 2610:1c0:0:5::131
 ipset add -exist allow-list6 2620:13:4000:6000::1000:118
+ipset add -exist allow-list6 2a0c:dd40:1:b::42
 ipset create tor-ddos6 hash:ip family inet6 hashsize 4096 timeout 43200
 ipset create persec6 hash:ip family inet6 hashsize 4096 timeout 3600
 ip6tables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list6 src -j ACCEPT
