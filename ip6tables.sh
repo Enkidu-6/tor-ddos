@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # set -x
 ip6tables-save > /var/tmp/ip6tablesRules.v4
 ip6tables -F
