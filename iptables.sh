@@ -33,7 +33,6 @@ iptables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list src -j ACC
 iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -m recent --name tor-ddos --set
 iptables -t mangle -A PREROUTING -p tcp --syn --dport $ORPort -m conntrack --ctstate NEW -m hashlimit --hashlimit-name TOR --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 3/sec --hashlimit-burst 4 --hashlimit-htable-expire 3500 -j SET --add-set persec src
 iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-ddos src
-iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set persec src -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos src -j DROP
 iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -j ACCEPT
