@@ -33,8 +33,6 @@ iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --dport $
 iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --dport $ORPort2 -m conntrack --ctstate NEW -m hashlimit --hashlimit-name TOR2 --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 3/sec --hashlimit-burst 4 --hashlimit-htable-expire 3500 -j SET --add-set persec2 src
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-ddos src
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort2 -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor2-ddos src
-iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j DROP
-iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort2 -m connlimit --connlimit-mask 32 --connlimit-above 2 -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set persec src -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set persec2 src -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos src -j DROP
