@@ -1,3 +1,3 @@
 #!/bin/bash
 # set -x
-ipset save -f /var/tmp/ipset.all
+ipset save -f /var/tmp/ipset.full
