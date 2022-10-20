@@ -1,3 +1,3 @@
 #!/bin/bash
 # set -x
-ipset restore -exist -f /var/tmp/ipset.all
+ipset restore -exist -f /var/tmp/ipset.full
