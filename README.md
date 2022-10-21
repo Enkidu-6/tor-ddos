@@ -232,6 +232,8 @@ iptables -t mangle -A PREROUTING -p tcp --syn --dport 443 -m conntrack --ctstate
 
 iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-ddos src
 
+iptables -t mangle -A PREROUTING -p tcp --syn --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 2 -j DROP
+
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set persec src -j DROP
 
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos src -j DROP
@@ -247,13 +249,7 @@ Add IP addresses that try connecting to us at a rate of 3 per second or 4 in 3.5
 
 Add IP addresses that try to create more than 2 connections at a time to our ORPort to a list (tor-ddos).
 
-~~Dropping any attempt to connect to ORPort if they already have two.~~ **Removed the rule. May be responsible for a drop in consensus weight. Needs further investigation.**
-
-**If you have the rule, no need to run the new script again. Simply remove it using the following command in terminal as root or sudo**
-
-```
-iptables -t mangle -D PREROUTING -p tcp --syn --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 2 -j DROP
-```
+Dropping any attempt to connect to ORPort if they already have two.
 
 Dropping any attempt from those in our per second list
 
