@@ -16,7 +16,7 @@ If you don't want to read the rest just run **iptables.sh** and **ip6tables.sh**
 
 That's it. You're good to go.
 
-If you have two instances of Tor running on the same system with two ORPorts run
+If you have two instances of Tor running on the same system with two ORPorts use the files in the dual-or folder
 
 **wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/dual-or/2or-v4.sh** and
 
@@ -30,7 +30,7 @@ Both versions of the scripts make a backup of your original iptables and ip6tabl
 
 **ipset destroy**
 
-If you are running Tor on a VM and have access to the host e.g KVM, Proxmox, etc... you can run the iptables on the host and have all the packets filtered using the Host's resources before they are forwarded to the VM. This will allow your VM to use all the resources available to it for running Tor without spending any resources on filtering. In that case use:
+If you are running Tor on a VM and have access to the host e.g KVM, Proxmox, etc... you can run the iptables on the host and have all the packets filtered using the Host's resources before they are forwarded to the VM. This will allow your VM to use all the resources available to it for running Tor without spending any resources on filtering. In that case use the files in the host folder::
 
 **wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/host/iptables-host.sh** 
 
