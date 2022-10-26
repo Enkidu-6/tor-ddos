@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bas
 # set -x
 ipset -L tor-ddos | awk '{print $1}' > /var/tmp/file1
 ipset -L persec | awk '{print $1}' >> /var/tmp/file1
