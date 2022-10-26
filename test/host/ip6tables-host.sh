@@ -1,8 +1,8 @@
 #!/bin/bash
 # set -x
 ip6tables-save > /var/tmp/ip6tablesRules.v4
-# Change this to the IP address of your VM
-ipaddress=10.1.1.2
+# Change this to the IPv6 address of your VM
+ipaddress=xxxx:xxxx::xxxx
 # Change this number to your own ORPort if it's not 443
 ORPort=443
 ipset create -exist allow-list6 hash:ip family inet6
