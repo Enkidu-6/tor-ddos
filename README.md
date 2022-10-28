@@ -254,12 +254,5 @@ Cheers.
 
 **Inspired by @toralf iptables rules, adding a few twists.**
 
-#
-#
-#
-#
-#
-#
-#
-# Change log
+
 
