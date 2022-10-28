@@ -50,21 +50,15 @@ To see how many IP addresses are caught in the block list and per second list at
 **ipset -L persec**
 
 
-run **compare.sh** file ( wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/compare.sh ) to simply check the block list against the list of all tor relays. It will display the IP addresses in the block list that are also a tor relay. You will always have a few relays in the list. Trapping 10 or 20 relays out of over 6500 in my view is inconsequential and will have no ill effect on the opertion of tor network or your relay. 
+Run **compare.sh** file ( wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/compare.sh ) to simply check the block list against the list of all tor relays. It will display the IP addresses in the block list that are also a tor relay. You will always have a few relays in the list. Trapping 10 or 20 relays out of over 6500 in my view is inconsequential and will have no ill effect on the opertion of tor network or your relay. 
 
 Unfortunately they accept all those concurrent connections and pass them on to all other relays. The alternative would be to let them in and have a few hundred bad actors come in with them. They stay in the list for a maximum of 12 hours and then released, unless they break the rules again.
 
-Nevertheless if you want to remove them, you can either do that individually by simply typing:
+Nevertheless every time you run **compare.sh** you are given the option to either automatically remove all of them or only the relays that are running two instances of Tor.
 
-**ipset del tor-ddos IP_ADDRESS**
+Removing all of them will only increase the load on your system as they will get another chance to open two more connections and they probably come back in a few minutes.
 
-Or to remove them in bulk you can run **remove.sh** ( wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/remove.sh ).
-
-It will only increase the load on your system and they probably come back in a few minutes.
-
-However relays running two instances of Tor have a higher chance of getting caught in the block list. **compare-dual.sh** will show you only those relays and **remove-dual-or.sh** will remove only those relays from your block list.
-
-It would be a good idea to remove those relays periodically from your block list. You can schedule a cron job to do that perhaps once an hour or more or less frequently as you see fit.
+However relays running two instances of Tor have a higher chance of getting caught in the block list. It would be a good idea to remove those relays periodically from your block list. You can do so using the options ypu're given when running **compare.sh**. I have also provided simpler scripts suitable for a cron job in the cron directory. Use them as you see fit.
 
 # tor-ddos The long version
 
@@ -259,3 +253,6 @@ Thanks for running a relay,
 Cheers.
 
 **Inspired by @toralf iptables rules, adding a few twists.**
+
+
+
