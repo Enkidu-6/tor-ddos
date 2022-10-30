@@ -58,7 +58,7 @@ Nevertheless every time you run **compare.sh** you are given the option to eithe
 
 Removing all of them will only increase the load on your system as they will get another chance to open two more connections and they probably come back in a few minutes.
 
-However relays running two instances of Tor have a higher chance of getting caught in the block list. It would be a good idea to remove those relays periodically from your block list. You can do so using the options ypu're given when running **compare.sh**. I have also provided simpler scripts suitable for a cron job in the cron directory. Use them as you see fit.
+However relays running two instances of Tor have a higher chance of getting caught in the block list. It would be a good idea to remove those relays periodically from your block list. You can do so using the options you're given when running **compare.sh**. I have also provided simpler scripts suitable for a cron job in the cron directory. Use them as you see fit.
 
 # tor-ddos The long version
 
