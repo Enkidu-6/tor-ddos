@@ -13,7 +13,7 @@ sysctl net.ipv4.ip_local_port_range="10000 65000"
 echo 20 > /proc/sys/net/ipv4/tcp_fin_timeout
 modprobe xt_recent ip_list_tot=10000
 ipset restore -exist -f /var/tmp/ipset.full
-sleep 1
+sleep 2
 # Change this number to your own ORPort if it's not 443
 ORPort=443
 iptables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list src -j ACCEPT
