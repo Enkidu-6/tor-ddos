@@ -13,7 +13,7 @@ sysctl net.ipv4.ip_local_port_range="10000 65000"
 echo 20 > /proc/sys/net/ipv4/tcp_fin_timeout
 modprobe xt_recent ip_list_tot=10000
 ipset restore -exist -f /var/tmp/ipset.full
-sleep 1
+sleep 2
 # Change this to the IP address of your VM
 ipaddress=10.1.1.2
 # Change this to the IPv6 address of your VM
