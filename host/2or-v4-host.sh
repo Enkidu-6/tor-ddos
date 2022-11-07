@@ -8,7 +8,7 @@ modprobe xt_recent ip_list_tot=10000
 ipaddress=10.1.1.2
 # Change this number to your own ORPort if it's not 443
 ORPort=443
-# Change this number to yoursecond ORPort if it's not 80
+# Change this number to your second ORPort if it's not 80
 ORPort2=80
 ipset create -exist allow-list hash:ip
 ipset add -exist allow-list 128.31.0.34
