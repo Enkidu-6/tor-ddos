@@ -1,6 +1,7 @@
 #!/bin/bash
 # set -x
 iptables-save > /var/tmp/iptablesRules-pre-update.v4
+ip6tables-save > /var/tmp/ip6tablesRules-pre-update.v4
 ipset save -f /var/tmp/ipset.full
 iptables -Z
 iptables -t mangle -F
