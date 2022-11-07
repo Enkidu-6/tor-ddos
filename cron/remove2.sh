@@ -1,6 +1,6 @@
 #!/bin/bash
 # set -x
-/usr/sbin/ipset -L tor-ddos | awk '{print $1}' > /var/tmp/file3
+/usr/sbin/ipset -L tor2-ddos | awk '{print $1}' > /var/tmp/file3
 if [[ ! -e /var/tmp/file2 ]]; then
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/relays-v4.txt' > /var/tmp/file2
 elif
