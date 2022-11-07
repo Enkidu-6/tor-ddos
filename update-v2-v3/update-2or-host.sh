@@ -3,9 +3,7 @@
 iptables-save > /var/tmp/iptablesRules-pre-update.v4
 iptables-save > /var/tmp/ip6tablesRules-pre-update.v4
 ipset save -f /var/tmp/ipset.full
-iptables -Z
 iptables -t mangle -F
-ip6tables -Z
 ip6tables -t mangle -F
 sleep 1
 ipset destroy
