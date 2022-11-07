@@ -12,5 +12,5 @@ elif
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/relays-v4.txt' > /var/tmp/file2
 fi
 cd /var/tmp
-perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  file1 file2 >> relays.log
+perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  file1 file2 >> /var/tmp/relays.log
 echo '----------------------------' >> /var/tmp/relays.log
