@@ -198,6 +198,8 @@ Just in case you didn't want to edit your **sysctl.conf**. You should at least d
 ```
 iptables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list src -j ACCEPT
 
+iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m hashlimit --hashlimit-name TOR-$ORPort --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 1/minute --hashlimit-burst 5 --hashlimit-htable-expire 60000 -j DROP
+
 iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m recent --name tor-ddos --set
 
 iptables -t mangle -A PREROUTING -p tcp --syn --dport 443 -m conntrack --ctstate NEW -m hashlimit --hashlimit-name TOR --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 3/sec --hashlimit-burst 4 --hashlimit-htable-expire 3500 -j SET --add-set persec src
@@ -215,13 +217,15 @@ iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -j ACCEPT
 
 We let tor-authorities and snowflake do what they need to do.
 
+We throttle the connection of abusive IP addresses to 1 per minute after letting the first 5 connections request through. This will prevent your conntrack table to get flooded at a very high rate at once and gives your system time to process and add them to the block list gradually while they wait. It also to a certain point protect you from SYN flood attacks.
+
 keep track of connections in a file named tor-ddos which will reside in /proc/net/xt_recent/
 
 Add IP addresses that try connecting to us at a rate of 3 per second or 4 in 3.5 seconds, whichever comes first (persec).
 
-Add IP addresses that try to create more than 2 connections at a time to our ORPort to a list (tor-ddos).
+Add IP addresses that try to create more than 4 connections at a time to our ORPort to a list (tor-ddos).
 
-Dropping any attempt to connect to ORPort if they already have two.
+Dropping any attempt to connect to ORPort if they already have 4, whether they are in the block list or not.
 
 Dropping any attempt from those in our per second list
 
