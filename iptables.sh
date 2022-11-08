@@ -29,4 +29,4 @@ iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -m connlimit 
 iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set persec src -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos src -j DROP
-iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -j ACCEP
+iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -j ACCEPT
