@@ -245,6 +245,8 @@ The ipsets may or may not remain intact upon reboot so if you decide to run the 
 
 You can also use **ipset-backup.sh** before each reboot and restore them with **ipset-restore.sh**
 
+You can also run one of the **update** files - depending on your Tor setup -in the **update directory** to refresh everything. It saves your block lists so you don't have to start all over again but it clears your conntrack table and starts fresh.
+
 Thanks for running a relay,
 
 Cheers.
