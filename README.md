@@ -1,26 +1,31 @@
+# Update
+***There are a few major revisions and bug fixes in the new version 3.0. Please update as soon as you're able to. All you need is to run the appropriate update file in the update directory. No reboot or restart of Tor is necessary and there will be zero downtime. Don't forget to change the port number to your own ORPorts before running the scripts.*** 
+
 # TLDR Version
 
-If you don't want to read the rest just run **iptables.sh** and **ip6tables.sh** . They're really not scripts, just a series of commands and iptables rules one after another. You can even copy the content and just paste them in the terminl. You must be root or run the script using sudo. ***It assumes your ORPort is 443. If you're listening on another port, change 443 to whatever port you're listening on before running the script*** otherwise all these rules will be useless to you.
+If you don't want to read the rest just either run **combined.sh** if you have both IPv4 and IPv6. or you can run **iptables.sh** and **ip6tables.sh** individually. They're a series of commands and iptables rules one after another. You can even copy the content and just paste them in the terminl. You must be root or run the script using sudo. ***It assumes your ORPort is 443. If you're listening on another port, change 443 to whatever port you're listening on before running the script*** otherwise all these rules will be useless to you.
+
+**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/combined.sh**
+
+Or just
 
 **wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/iptables.sh**
 
-**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/ip6tables.sh**
+**chmod a+x combined.sh**
+
+or
 
 **chmod a+x iptables.sh**
 
-**chmod a+x ip6tables.sh**
+**sudo ./combined.sh**
+
+or
 
 **sudo ./iptables.sh**
-
-**sudo ./ip6tables.sh**
 
 That's it. You're good to go.
 
 If you have two instances of Tor running on the same system with two ORPorts use the files in the **dual-or** directory:
-
-**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/dual-or/2or-v4.sh** and
-
-**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/dual-or/2or-v6.sh**
 
 Both versions of the scripts make a backup of your original iptables and ip6tables rules. You can restore the original rules by either simply rebooting or running the following commands:
 
@@ -30,17 +35,7 @@ Both versions of the scripts make a backup of your original iptables and ip6tabl
 
 **ipset destroy**
 
-If you are running Tor on a VM and have access to the host e.g KVM, Proxmox, etc... you can run the iptables on the host and have all the packets filtered using the Host's resources before they are forwarded to the VM. This will allow your VM to use all the resources available to it for running Tor without spending any resources on filtering. In that case use the files in the **host** directory:
-
-**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/host/iptables-host.sh** 
-
-**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/host/ip6tables-host.sh**  
-
-or in case of having two OR ports:
-
-**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/host/2or-v4-host.sh**
-
-**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/host/2or-v6-host.sh**
+If you are running Tor on a VM and have access to the host e.g KVM, Proxmox, etc... you can run the iptables on the host and have all the packets filtered using the Host's resources before they are forwarded to the VM. This will allow your VM to use all the resources available to it for running Tor without spending any resources on filtering. In that case use the files in the **host** directory.
 
 
 To see how many IP addresses are caught in the block list and per second list at any time you can type:
@@ -50,15 +45,13 @@ To see how many IP addresses are caught in the block list and per second list at
 **ipset -L persec**
 
 
-Run **compare.sh** file ( wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/compare.sh ) to simply check the block list against the list of all tor relays. It will display the IP addresses in the block list that are also a tor relay. You will always have a few relays in the list. Trapping 10 or 20 relays out of over 6500 in my view is inconsequential and will have no ill effect on the opertion of tor network or your relay. 
+Run **compare.sh** file ( wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/compare.sh ) to simply check the block list against the list of all tor relays. It will display the IP addresses in the block list that are also a tor relay. 
 
-Unfortunately they accept all those concurrent connections and pass them on to all other relays. The alternative would be to let them in and have a few hundred bad actors come in with them. They stay in the list for a maximum of 12 hours and then released, unless they break the rules again.
+They stay in the list for a maximum of 12 hours and then released, unless they break the rules again.
 
-Nevertheless every time you run **compare.sh** you are given the option to either automatically remove all of them or only the relays that are running two instances of Tor.
+Every time you run **compare.sh** you are given the option to either automatically remove all of them or only the relays that are running two instances of Tor.
 
-Removing all of them will only increase the load on your system as they will get another chance to open two more connections and they probably come back in a few minutes.
-
-However relays running two instances of Tor have a higher chance of getting caught in the block list. It would be a good idea to remove those relays periodically from your block list. You can do so using the options you're given when running **compare.sh**. I have also provided simpler scripts suitable for a cron job in the cron directory. Use them as you see fit.
+You can also remove those relays periodically from your block list using the simpler scripts suitable for a cron job in the **cron** directory. Use them as you see fit.
 
 # tor-ddos The long version
 
