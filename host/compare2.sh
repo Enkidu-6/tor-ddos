@@ -1,7 +1,6 @@
 #!/bin/bash
 # set -x
 ipset -L tor2-ddos | awk '{print $1}' > /var/tmp/file3
-ipset -L persec2 | awk '{print $1}' >> /var/tmp/file3
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/relays-v4.txt' > /var/tmp/file2
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/dual-or.txt' > /var/tmp/dual-or
 cd /var/tmp

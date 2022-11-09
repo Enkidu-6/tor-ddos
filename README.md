@@ -178,10 +178,9 @@ We create an ipset and add the addresses of the tor authorities so we can whitel
 ```
 ipset create tor-ddos hash:ip family inet hashsize 4096 timeout 43200
 
-ipset create persec hash:ip family inet hashsize 4096 timeout 3600
 ```
 
-Adding two more ipsets one for those who make too many connections and another for those who bombard us with requests for connections at a high rate per second. First one expires in 12 hours and the second one in 1 hour.
+Adding on more ipset one for those who make too many connections. Itexpires in 12 hours.
 
 ```
 sysctl net.ipv4.ip_local_port_range="10000 65000"
@@ -202,11 +201,9 @@ iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m hash
 
 iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m recent --name tor-ddos --set
 
-iptables -t mangle -A PREROUTING -p tcp --syn --dport 443 -m conntrack --ctstate NEW -m hashlimit --hashlimit-name TOR --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 3/sec --hashlimit-burst 4 --hashlimit-htable-expire 3500 -j SET --add-set persec src
+iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j SET --add-set tor-ddos src
 
-iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-ddos src
-
-iptables -t mangle -A PREROUTING -p tcp --syn --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 2 -j DROP
+iptables -t mangle -A PREROUTING -p tcp --syn --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
 
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set persec src -j DROP
 
@@ -221,13 +218,9 @@ We throttle the connection of abusive IP addresses to 1 per minute after letting
 
 keep track of connections in a file named tor-ddos which will reside in /proc/net/xt_recent/
 
-Add IP addresses that try connecting to us at a rate of 3 per second or 4 in 3.5 seconds, whichever comes first (persec).
-
 Add IP addresses that try to create more than 4 connections at a time to our ORPort to a list (tor-ddos).
 
 Dropping any attempt to connect to ORPort if they already have 4, whether they are in the block list or not.
-
-Dropping any attempt from those in our per second list
 
 Dropping any attempt by those in our ddos list
 
