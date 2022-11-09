@@ -12,8 +12,6 @@ echo 20 > /proc/sys/net/ipv4/tcp_fin_timeout
 modprobe xt_recent ip_list_tot=10000
 ipset restore -exist -f /var/tmp/ipset.full
 sleep 2
-ipset destroy persec
-ipset destroy persec6
 # Change this to the IP address of your VM
 ipaddress=10.1.1.2
 # Change this to the IPv6 address of your VM
