@@ -12,10 +12,6 @@ echo 20 > /proc/sys/net/ipv4/tcp_fin_timeout
 modprobe xt_recent ip_list_tot=10000
 ipset restore -exist -f /var/tmp/ipset.full
 sleep 2
-ipset destroy persec
-ipset destroy persec2
-ipset destroy persec6
-ipset destroy persec26
 # Change this number to your own ORPort if it's not 443
 ORPort=443
 # Change this number to your second ORPort if it's not 80
