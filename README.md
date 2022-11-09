@@ -17,6 +17,8 @@ or
 
 **chmod a+x iptables.sh**
 
+Edit the file and change the ORPOrt to your own
+
 **sudo ./combined.sh**
 
 or
