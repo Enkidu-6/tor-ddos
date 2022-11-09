@@ -17,7 +17,7 @@ or
 
 **chmod a+x iptables.sh**
 
-Edit the file and change the ORPort to your own
+***Edit the file and change the ORPort to your own.***
 
 **sudo ./combined.sh**
 
