@@ -44,8 +44,6 @@ To see how many IP addresses are caught in the block list and per second list at
 
 **ipset -L tor-ddos**
 
-**ipset -L persec**
-
 
 Run **compare.sh** file ( wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/compare.sh ) to simply check the block list against the list of all tor relays. It will display the IP addresses in the block list that are also a tor relay. 
 
