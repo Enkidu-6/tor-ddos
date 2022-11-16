@@ -40,7 +40,7 @@ Both versions of the scripts make a backup of your original iptables and ip6tabl
 If you are running Tor on a VM and have access to the host e.g KVM, Proxmox, etc... you can run the iptables on the host and have all the packets filtered using the Host's resources before they are forwarded to the VM. This will allow your VM to use all the resources available to it for running Tor without spending any resources on filtering. In that case use the files in the **host** directory.
 
 
-To see how many IP addresses are caught in the block list and per second list at any time you can type:
+To see how many IP addresses are caught in the block list at any time you can type:
 
 **ipset -L tor-ddos**
 
@@ -150,7 +150,7 @@ This would be a good time to check your firewall and make sure your previous con
 ```
 ipset create -exist allow-list hash:ip
 
-ipset add -exist allow-list 128.31.0.34
+ipset add -exist allow-list 128.31.0.39
 
 ipset add -exist allow-list 131.188.40.189
 
@@ -214,7 +214,7 @@ iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -j ACCEPT
 
 We let tor-authorities and snowflake do what they need to do.
 
-We throttle the connection of abusive IP addresses to 1 per minute after letting the first 5 connection requests through. This will prevent your conntrack table to get flooded at a very high rate at once and gives your system time to process and add them to the block list gradually while they wait. It also, to a certain point, protect you from SYN flood attacks.
+We throttle the connections of abusive IP addresses to 1 per minute after letting the first 5 connection requests through. This will prevent your conntrack table to get flooded at a very high rate at once and gives your system time to process and add them to the block list gradually while they wait. It also, to a certain point, protect you from SYN flood attacks.
 
 keep track of connections in a file named tor-ddos which will reside in /proc/net/xt_recent/
 
