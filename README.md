@@ -44,8 +44,6 @@ To see how many IP addresses are caught in the block list and per second list at
 
 **ipset -L tor-ddos**
 
-**ipset -L persec**
-
 
 Run **compare.sh** file ( wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/compare.sh ) to simply check the block list against the list of all tor relays. It will display the IP addresses in the block list that are also a tor relay. 
 
@@ -182,7 +180,7 @@ ipset create tor-ddos hash:ip family inet hashsize 4096 timeout 43200
 
 ```
 
-Adding on more ipset one for those who make too many connections. Itexpires in 12 hours.
+Adding one more ipset for those who make too many connections. It expires in 12 hours.
 
 ```
 sysctl net.ipv4.ip_local_port_range="10000 65000"
@@ -216,7 +214,7 @@ iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -j ACCEPT
 
 We let tor-authorities and snowflake do what they need to do.
 
-We throttle the connection of abusive IP addresses to 1 per minute after letting the first 5 connections request through. This will prevent your conntrack table to get flooded at a very high rate at once and gives your system time to process and add them to the block list gradually while they wait. It also to a certain point protect you from SYN flood attacks.
+We throttle the connection of abusive IP addresses to 1 per minute after letting the first 5 connection requests through. This will prevent your conntrack table to get flooded at a very high rate at once and gives your system time to process and add them to the block list gradually while they wait. It also, to a certain point, protect you from SYN flood attacks.
 
 keep track of connections in a file named tor-ddos which will reside in /proc/net/xt_recent/
 

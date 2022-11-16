@@ -11,7 +11,7 @@ modprobe xt_recent ip_list_tot=10000
 # Change this number to your own ORPort if it's not 443
 ORPort=443
 ipset create -exist allow-list hash:ip
-ipset add -exist allow-list 128.31.0.34
+ipset add -exist allow-list 128.31.0.39
 ipset add -exist allow-list 131.188.40.189
 ipset add -exist allow-list 154.35.175.225
 ipset add -exist allow-list 171.25.193.9
