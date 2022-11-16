@@ -10,17 +10,12 @@ ORPort=443
 # Change this number to your second ORPort if it's not 80
 ORPort2=80
 ipset create -exist allow-list hash:ip
-ipset add -exist allow-list 128.31.0.39
-ipset add -exist allow-list 131.188.40.189
-ipset add -exist allow-list 154.35.175.225
-ipset add -exist allow-list 171.25.193.9
-ipset add -exist allow-list 193.23.244.244
-ipset add -exist allow-list 199.58.81.140
-ipset add -exist allow-list 204.13.164.118
-ipset add -exist allow-list 45.66.33.45
-ipset add -exist allow-list 66.111.2.131
-ipset add -exist allow-list 86.59.21.38
-ipset add -exist allow-list 193.187.88.42
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v4.txt' | sed -e '1,3d' > /var/tmp/allow
+getent ahostsv4 snowflake-01.torproject.net | awk '{ print $1 }' | sort -u >> /var/tmp/allow
+for i in `cat /var/tmp/allow` ;
+do
+ipset add -exist allow-list $i
+done;
 ipset create tor-ddos hash:ip family inet hashsize 4096 timeout 43200
 ipset create tor2-ddos hash:ip family inet hashsize 4096 timeout 43200
 iptables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list src -j ACCEPT

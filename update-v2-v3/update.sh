@@ -12,6 +12,21 @@ echo 20 > /proc/sys/net/ipv4/tcp_fin_timeout
 modprobe xt_recent ip_list_tot=10000
 ipset restore -exist -f /var/tmp/ipset.full
 sleep 2
+ipset flush allow-list
+ipset flush allow-list6
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v4.txt' | sed -e '1,3d' > /var/tmp/allow
+getent ahostsv4 snowflake-01.torproject.net | awk '{ print $1 }' | sort -u >> /var/tmp/allow
+for i in `cat /var/tmp/allow` ;
+do
+ipset add -exist allow-list $i
+done;
+ipset create -exist allow-list6 hash:ip family inet6
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v6.txt' | sed -e '1,3d' > /var/tmp/allow6
+getent ahostsv6 snowflake-01.torproject.net | awk '{ print $1 }' | sort -u >> /var/tmp/allow6
+for i in `cat /var/tmp/allow6` ;
+do
+ipset add -exist allow-list6 $i
+done;
 # Change this number to your own ORPort if it's not 443
 ORPort=443
 iptables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list src -j ACCEPT
