@@ -11,17 +11,12 @@ modprobe xt_recent ip_list_tot=10000
 # Change this number to your own ORPort if it's not 443
 ORPort=443
 ipset create -exist allow-list hash:ip
-ipset add -exist allow-list 128.31.0.39
-ipset add -exist allow-list 131.188.40.189
-ipset add -exist allow-list 154.35.175.225
-ipset add -exist allow-list 171.25.193.9
-ipset add -exist allow-list 193.23.244.244
-ipset add -exist allow-list 199.58.81.140
-ipset add -exist allow-list 204.13.164.118
-ipset add -exist allow-list 45.66.33.45
-ipset add -exist allow-list 66.111.2.131
-ipset add -exist allow-list 86.59.21.38
-ipset add -exist allow-list 193.187.88.42
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v4.txt' | sed -e '1,3d' > /var/tmp/allow
+getent ahostsv4 snowflake-01.torproject.net | awk '{ print $1 }' | sort -u >> /var/tmp/allow
+for i in `cat /var/tmp/allow` ;
+do
+ipset add -exist allow-list $i
+done;
 ipset create tor-ddos hash:ip family inet hashsize 4096 timeout 43200
 iptables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list src -j ACCEPT
 iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m hashlimit --hashlimit-name TOR-$ORPort --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 1/minute --hashlimit-burst 5 --hashlimit-htable-expire 60000 -j DROP
@@ -31,14 +26,12 @@ iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m conn
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos src -j DROP
 iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -j ACCEPT
 ipset create -exist allow-list6 hash:ip family inet6
-ipset add -exist allow-list6 2001:638:a000:4140::ffff:189
-ipset add -exist allow-list6 2001:678:558:1000::244
-ipset add -exist allow-list6 2001:67c:289c::9
-ipset add -exist allow-list6 2001:858:2:2:aabb:0:563b:1526
-ipset add -exist allow-list6 2607:8500:154::3
-ipset add -exist allow-list6 2610:1c0:0:5::131
-ipset add -exist allow-list6 2620:13:4000:6000::1000:118
-ipset add -exist allow-list6 2a0c:dd40:1:b::42
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v6.txt' | sed -e '1,3d' > /var/tmp/allow6
+getent ahostsv6 snowflake-01.torproject.net | awk '{ print $1 }' | sort -u >> /var/tmp/allow6
+for i in `cat /var/tmp/allow6` ;
+do
+ipset add -exist allow-list6 $i
+done;
 ipset create tor-ddos6 hash:ip family inet6 hashsize 4096 timeout 43200
 ip6tables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list6 src -j ACCEPT
 ip6tables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m hashlimit --hashlimit-name TOR6-$ORPort --hashlimit-mode srcip --hashlimit-srcmask 128 --hashlimit-above 1/minute --hashlimit-burst 5 --hashlimit-htable-expire 60000 -j DROP
