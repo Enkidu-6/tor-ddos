@@ -1,5 +1,5 @@
 # Update
-***There are a few major revisions and bug fixes in the new version 3.0. Please update as soon as you're able to. All you need is to run the appropriate update file in the update directory. No reboot or restart of Tor is necessary and there will be zero downtime. Don't forget to change the port number to your own ORPorts before running the scripts. The update files can be used at any time to update to the newest version regardless of your previous version.***
+**There are a few major revisions and bug fixes in the new version 3.0. Please update as soon as you're able to. All you need is to run the appropriate update file in the update directory. No reboot or restart of Tor is necessary and there will be zero downtime.** ***Don't forget to change the port number to your own ORPorts before running the scripts.*** **The update files can be used at any time to update to the newest version regardless of your previous version.**
 
 # TLDR Version
 
