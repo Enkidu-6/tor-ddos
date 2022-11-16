@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 # set -x
 iptables-save > /var/tmp/iptablesRules-pre-update.v4
 ip6tables-save > /var/tmp/ip6tablesRules-pre-update.v4
