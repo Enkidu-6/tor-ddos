@@ -20,7 +20,7 @@ sudo ./combined.sh
 
 That's it. You're good to go.
 
-If you have two instances of Tor running on the same system with two ORPorts, use **combined-2or.sh** in the **dual-or** directory:
+If you have two instances of Tor running on the same system with two ORPorts, use **combined-2or.sh** in the **dual-or** directory
 
 Both versions of the scripts make a backup of your original iptables and ip6tables rules. You can restore the original rules by either simply rebooting or running the following commands:
 
