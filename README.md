@@ -3,41 +3,35 @@
 
 # TLDR Version
 
-If you don't want to read the rest just either run **combined.sh** if you have both IPv4 and IPv6. or you can run **iptables.sh** and **ip6tables.sh** individually. They're a series of commands and iptables rules one after another. You can even copy the content and just paste them in the terminl. You must be root or run the script using sudo. ***It assumes your ORPort is 443. If you're listening on another port, change 443 to whatever port you're listening on before running the script*** otherwise all these rules will be useless to you.
+If you don't want to read the rest and like majority of operators, you are simply running a relay with a single ORPort, just run **combined.sh**. Or you can run **iptables.sh** and **ip6tables.sh** individually if you like. They're a series of commands and iptables rules one after another. You can even copy the content and just paste them in the terminl. You must be root or run the script using sudo. ***It assumes your ORPort is 443. If you're listening on another port, change 443 to whatever port you're listening on before running the script*** otherwise all these rules will be useless to you.
 
-**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/combined.sh**
+So this is how it goes:
 
-Or just
-
-**wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/iptables.sh**
-
-**chmod a+x combined.sh**
-
-or
-
-**chmod a+x iptables.sh**
-
+```
+wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/combined.sh
+```
+```
+chmod a+x combined.sh
+```
 ***Edit the file and change the ORPort to your own.***
-
-**sudo ./combined.sh**
-
-or
-
-**sudo ./iptables.sh**
+```
+sudo ./combined.sh
+```
 
 That's it. You're good to go.
 
-If you have two instances of Tor running on the same system with two ORPorts use the files in the **dual-or** directory:
+If you have two instances of Tor running on the same system with two ORPorts, use **combined-2or.sh** in the **dual-or** directory:
 
 Both versions of the scripts make a backup of your original iptables and ip6tables rules. You can restore the original rules by either simply rebooting or running the following commands:
 
-**iptables-restore < /var/tmp/iptablesRules.v4**
+```
+iptables-restore < /var/tmp/iptablesRules.v4
+ip6tables-restore < /var/tmp/ip6tablesRules.v4
+ipset destroy
 
-**ip6tables-restore < /var/tmp/ip6tablesRules.v4**
+```
 
-**ipset destroy**
-
-If you are running Tor on a VM and have access to the host e.g KVM, Proxmox, etc... you can run the iptables on the host and have all the packets filtered using the Host's resources before they are forwarded to the VM. This will allow your VM to use all the resources available to it for running Tor without spending any resources on filtering. In that case use the files in the **host** directory.
+If you are running Tor on a VM and have access to the host e.g KVM, Proxmox, etc... you can run the iptables on the host and have all the packets filtered using the Host's resources before they are forwarded to the VM. This will allow your VM to use all the resources available to it for running Tor without spending any resources on filtering. In that case use **combined-host.sh** or **combined-2or-host.sh** respectively in the **host** directory.
 
 
 To see how many IP addresses are caught in the block list at any time you can type:
@@ -45,11 +39,11 @@ To see how many IP addresses are caught in the block list at any time you can ty
 **ipset -L tor-ddos**
 
 
-Run **compare.sh** file ( wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/compare.sh ) to simply check the block list against the list of all tor relays. It will display the IP addresses in the block list that are also a tor relay. 
+Run **compare.sh** file to simply check the block list against the list of all tor relays. It will display the IP addresses in the block list that are also a tor relay. 
 
 They stay in the list for a maximum of 12 hours and then released, unless they break the rules again.
 
-Every time you run **compare.sh** you are given the option to either automatically remove all of them or only the relays that are running two instances of Tor.
+Every time you run **compare.sh** you are given the option to either automatically remove all the relays or only the relays that are running two instances of Tor from the block list.
 
 You can also remove those relays periodically from your block list using the simpler scripts suitable for a cron job in the **cron** directory. Use them as you see fit.
 
