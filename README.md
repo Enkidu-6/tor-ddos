@@ -184,7 +184,7 @@ echo 20 > /proc/sys/net/ipv4/tcp_fin_timeout
 modprobe xt_recent ip_list_tot=10000
 ```
 
-Just in case you didn't want to edit your **sysctl.conf**. You should at least do these three lines. The last one is important because when you are keeping track of connections, by default linux keeps track of 100 of them at most and then replaces them with new connections. We want to keep a longer list so we increase it to 10000.
+Just in case you didn't want to edit your **sysctl.conf**. You should at least do these three lines which is why I'm including them in the scripts. The last one is important because when you are keeping track of connections, by default linux keeps track of 100 of them at most and then replaces them with new connections. We want to keep a longer list so we increase it to 10000.
 
 ***Please note that the following rules assume your Orport is 443. If you are listening on a different port replace 443 with your own.***
 
