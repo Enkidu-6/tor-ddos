@@ -167,7 +167,7 @@ ipset add -exist allow-list 86.59.21.38
 ipset add -exist allow-list 193.187.88.42
 ```
 
-We create an ipset and add the addresses of the tor authorities so we can whitelist them. The last IP is actually the address for the snowflake.
+We create an ipset and add the addresses of the tor authorities so we can whitelist them. The last IP is actually the address for the snowflake. In the recent version of the script we now do a relay search and pull the most recent IP addresses for the above servers to make sure we don't have a wrong IP address hardcoded into the script.
 
 ```
 ipset create tor-ddos hash:ip family inet hashsize 4096 timeout 43200
