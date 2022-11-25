@@ -42,10 +42,10 @@ iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-p
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort2 -m recent --name tor2-ddos --set
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 4 -j SET --add-set tor-ddos src
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort2 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j SET --add-set tor2-ddos src
-iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
-iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort2 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos src -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor2-ddos src -j DROP
+iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
+iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort2 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -j ACCEPT
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort2 -j ACCEPT
 ip6tables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list6 src -j ACCEPT
@@ -55,9 +55,9 @@ ip6tables -t mangle -A PREROUTING -p tcp --destination $ip6address --destination
 ip6tables -t mangle -A PREROUTING -p tcp --destination $ip6address --destination-port $ORPort2 -m recent --name tor2-ddos6 --set
 ip6tables -t mangle -A PREROUTING -p tcp --destination $ip6address --destination-port $ORPort -m connlimit --connlimit-mask 128 --connlimit-above 4 -j SET --add-set tor-ddos6 src
 ip6tables -t mangle -A PREROUTING -p tcp --destination $ip6address --destination-port $ORPort2 -m connlimit --connlimit-mask 128 --connlimit-above 4 -j SET --add-set tor2-ddos6 src
-ip6tables -t mangle -A PREROUTING -p tcp --syn --destination $ip6address --destination-port $ORPort -m connlimit --connlimit-mask 128 --connlimit-above 4 -j DROP
-ip6tables -t mangle -A PREROUTING -p tcp --syn --destination $ip6address --destination-port $ORPort2 -m connlimit --connlimit-mask 128 --connlimit-above 4 -j DROP
 ip6tables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos6 src -j DROP
 ip6tables -t mangle -A PREROUTING -p tcp -m set --match-set tor2-ddos6 src -j DROP
+ip6tables -t mangle -A PREROUTING -p tcp --syn --destination $ip6address --destination-port $ORPort -m connlimit --connlimit-mask 128 --connlimit-above 4 -j DROP
+ip6tables -t mangle -A PREROUTING -p tcp --syn --destination $ip6address --destination-port $ORPort2 -m connlimit --connlimit-mask 128 --connlimit-above 4 -j DROP
 ip6tables -t mangle -A PREROUTING -p tcp --destination $ip6address --destination-port $ORPort -j ACCEPT
 ip6tables -t mangle -A PREROUTING -p tcp --destination $ip6address --destination-port $ORPort2 -j ACCEPT
