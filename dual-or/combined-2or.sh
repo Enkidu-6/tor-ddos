@@ -28,10 +28,10 @@ iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -m recent --n
 iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort2 -m recent --name tor2-ddos --set
 iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 4 -j SET --add-set tor-ddos src
 iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort2 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j SET --add-set tor2-ddos src
-iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
-iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort2 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos src -j DROP
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor2-ddos src -j DROP
+iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
+iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort2 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
 iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -j ACCEPT
 iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort2 -j ACCEPT
 ipset create -exist allow-list6 hash:ip family inet6
@@ -50,9 +50,9 @@ ip6tables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -m recent --
 ip6tables -t mangle -A PREROUTING -p tcp --destination-port $ORPort2 -m recent --name tor2-ddos6 --set
 ip6tables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -m connlimit --connlimit-mask 128 --connlimit-above 4 -j SET --add-set tor-ddos6 src
 ip6tables -t mangle -A PREROUTING -p tcp --destination-port $ORPort2 -m connlimit --connlimit-mask 128 --connlimit-above 4 -j SET --add-set tor2-ddos6 src
-ip6tables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m connlimit --connlimit-mask 128 --connlimit-above 4 -j DROP
-ip6tables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort2 -m connlimit --connlimit-mask 128 --connlimit-above 4 -j DROP
 ip6tables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos6 src -j DROP
 ip6tables -t mangle -A PREROUTING -p tcp -m set --match-set tor2-ddos6 src -j DROP
+ip6tables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m connlimit --connlimit-mask 128 --connlimit-above 4 -j DROP
+ip6tables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort2 -m connlimit --connlimit-mask 128 --connlimit-above 4 -j DROP
 ip6tables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -j ACCEPT
 ip6tables -t mangle -A PREROUTING -p tcp --destination-port $ORPort2 -j ACCEPT
