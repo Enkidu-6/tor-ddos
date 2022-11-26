@@ -47,6 +47,13 @@ Every time you run **compare.sh** you are given the option to either automatical
 
 You can also remove those relays periodically from your block list using the simpler scripts suitable for a cron job in the **cron** directory. Use them as you see fit.
 
+Type the following in terminal:
+
+```
+(crontab -l ; echo "*/1 * * * * /your_path_to/remove.sh") | crontab - 
+```
+It will check and remove all relays from your block list once a minute.
+
 # tor-ddos The long version
 
 I'm putting this together in response to some people who are looking for something simple that anyone regardless of their level of expertise can implement. Something that doesn't require a lot of time. No scripts, just mostly plain text and as simple as copy and paste if you want to.
