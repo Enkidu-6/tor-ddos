@@ -54,6 +54,9 @@ For example you can type the following in terminal:
 ```
 It will check and remove all relays from your block list once a minute. You can play with the time interval until you find a number you're happy with.
 
+You should also run a daily cron job with **refresh-authorities.sh** to always have the most recent IP addresses for your allow list.
+
+
 # tor-ddos The long version
 
 I'm putting this together in response to some people who are looking for something simple that anyone regardless of their level of expertise can implement. Something that doesn't require a lot of time. No scripts, just mostly plain text and as simple as copy and paste if you want to.
@@ -232,6 +235,8 @@ ipset destroy
 The ipsets will not remain intact upon reboot but won't be destroyed if you flush the iptables manually so if you decide to run the scripts again you should use the **update.sh** if you don't plan to reboot or **combined.sh** after a reboot. **update.sh** files clear your conntrack table and starts fresh. They also refresh your allow-list to the most current IP addresses for authorities and snowflake. It would be a good idea to run them from time to time.
 
 You can also use **ipset-backup.sh** before each reboot and restore them with **ipset-restore.sh** but they won't refresh the authorities.
+
+Run a cron job daily with **refresh-authorities.sh** to always have the most recent IP addresses.
 
 Thanks for running a relay,
 
