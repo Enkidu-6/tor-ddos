@@ -198,32 +198,26 @@ Just in case you didn't want to edit your **sysctl.conf**. You should at least d
 ```
 iptables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list src -j ACCEPT
 
-iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m hashlimit --hashlimit-name TOR-$ORPort --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 1/minute --hashlimit-burst 5 --hashlimit-htable-expire 60000 -j DROP
-
 iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m recent --name tor-ddos --set
 
-iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j SET --add-set tor-ddos src
-
-iptables -t mangle -A PREROUTING -p tcp --syn --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
-
-iptables -t mangle -A PREROUTING -p tcp -m set --match-set persec src -j DROP
+iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-ddos src
 
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos src -j DROP
+
+iptables -t mangle -A PREROUTING -p tcp --syn --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
 
 iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -j ACCEPT
 ```
 
 We let tor-authorities and snowflake do what they need to do.
 
-We throttle the connections of abusive IP addresses to 1 per minute after letting the first 5 connection requests through. This will prevent your conntrack table to get flooded at a very high rate at once and gives your system time to process and add them to the block list gradually while they wait. It also, to a certain point, protect you from SYN flood attacks.
-
 keep track of connections in a file named tor-ddos which will reside in /proc/net/xt_recent/
 
-Add IP addresses that try to create more than 4 connections at a time to our ORPort to a list (tor-ddos).
-
-Dropping any attempt to connect to ORPort if they already have 4, whether they are in the block list or not.
+Add IP addresses that try to create more than 2 connections at a time to our ORPort to a list (tor-ddos).
 
 Dropping any attempt by those in our ddos list
+
+Dropping any attempt to connect to ORPort if they already have 4, whether they are in the block list or not.
 
 Accept everyone else.
 
@@ -235,11 +229,9 @@ iptables-restore < /var/tmp/iptablesRules.v4
 ipset destroy
 ```
 
-The ipsets may or may not remain intact upon reboot so if you decide to run the scripts again you may get errors. You must destroy the ipsets before running the script again.
+The ipsets will not remain intact upon reboot but won't be destroyed if you flush the iptables manually so if you decide to run the scripts again you should use the **update.sh** if you don't plan to reboot or **combined.sh** after a reboot. **update.sh** files clear your conntrack table and starts fresh. They also refresh your allow-list to the most current IP addresses for authorities and snowflake. It would be a good idea to run them from time to time.
 
-You can also use **ipset-backup.sh** before each reboot and restore them with **ipset-restore.sh**
-
-You can also run one of the **update** files - depending on your Tor setup -in the **update directory** to refresh everything. It saves your block lists so you don't have to start all over again but it clears your conntrack table and starts fresh.
+You can also use **ipset-backup.sh** before each reboot and restore them with **ipset-restore.sh** but they won't refresh the authorities.
 
 Thanks for running a relay,
 
