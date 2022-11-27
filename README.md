@@ -55,10 +55,12 @@ For example you can type the following in terminal:
 ```
 It will check and remove all relays from your block list once a minute. You can play with the time interval until you find a number you're happy with.
 
+You should also run a daily cron job with **refresh-authorities.sh** to always have the most recent IP addresses for your allow list.
+
 
 # tor-ddos The long version
 
-I'm putting this together in response to some people who are looking for something simple that anyone regardless of their level of expertise can implement. Something that doesn't require a lot of time. Just mostly plain text and as simple as copy and paste if you want to.
+I'm putting this together in response to some people who are looking for something simple that anyone regardless of their level of expertise can implement. Something that doesn't require a lot of time. No scripts, just mostly plain text and as simple as copy and paste if you want to.
 
 # First step: Preparing your system for high number of connections:
 
@@ -153,7 +155,7 @@ This would be a good time to check your firewall and make sure your previous con
 ```
 ipset create -exist allow-list hash:ip
 
-ipset add -exist allow-list 128.31.0.34
+ipset add -exist allow-list 128.31.0.39
 
 ipset add -exist allow-list 131.188.40.189
 
@@ -176,7 +178,7 @@ ipset add -exist allow-list 86.59.21.38
 ipset add -exist allow-list 193.187.88.42
 ```
 
-We create an ipset and add the addresses of the tor authorities so we can whitelist them. The last IP is actually the address for the snowflake.
+We create an ipset and add the addresses of the tor authorities so we can whitelist them. The last IP is actually the address for the snowflake. In the recent version of the script we now do a relay search and pull the most recent IP addresses for the above servers to make sure we don't have a wrong IP address hardcoded into the script.
 
 ```
 ipset create tor-ddos hash:ip family inet hashsize 4096 timeout 43200
@@ -193,39 +195,33 @@ echo 20 > /proc/sys/net/ipv4/tcp_fin_timeout
 modprobe xt_recent ip_list_tot=10000
 ```
 
-Just in case you didn't want to edit your **sysctl.conf**. You should at least do these three lines. The last one is important because when you are keeping track of connections, by default linux keeps track of 100 of them at most and then replaces them with new connections. We want to keep a longer list so we increase it to 10000.
+Just in case you didn't want to edit your **sysctl.conf**. You should at least do these three lines which is why I'm including them in the scripts. The last one is important because when you are keeping track of connections, by default linux keeps track of 100 of them at most and then replaces them with new connections. We want to keep a longer list so we increase it to 10000.
 
 ***Please note that the following rules assume your Orport is 443. If you are listening on a different port replace 443 with your own.***
 
 ```
 iptables -t mangle -I PREROUTING -p tcp -m set --match-set allow-list src -j ACCEPT
 
-iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m hashlimit --hashlimit-name TOR-$ORPort --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 1/minute --hashlimit-burst 5 --hashlimit-htable-expire 60000 -j DROP
-
 iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m recent --name tor-ddos --set
 
-iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j SET --add-set tor-ddos src
-
-iptables -t mangle -A PREROUTING -p tcp --syn --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
-
-iptables -t mangle -A PREROUTING -p tcp -m set --match-set persec src -j DROP
+iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-ddos src
 
 iptables -t mangle -A PREROUTING -p tcp -m set --match-set tor-ddos src -j DROP
+
+iptables -t mangle -A PREROUTING -p tcp --syn --destination-port 443 -m connlimit --connlimit-mask 32 --connlimit-above 4 -j DROP
 
 iptables -t mangle -A PREROUTING -p tcp --destination-port 443 -j ACCEPT
 ```
 
 We let tor-authorities and snowflake do what they need to do.
 
-We throttle the connection of abusive IP addresses to 1 per minute after letting the first 5 connection requests through. This will prevent your conntrack table to get flooded at a very high rate at once and gives your system time to process and add them to the block list gradually while they wait. It also, to a certain point, protect you from SYN flood attacks.
-
 keep track of connections in a file named tor-ddos which will reside in /proc/net/xt_recent/
 
-Add IP addresses that try to create more than 4 connections at a time to our ORPort to a list (tor-ddos).
-
-Dropping any attempt to connect to ORPort if they already have 4, whether they are in the block list or not.
+Add IP addresses that try to create more than 2 connections at a time to our ORPort to a list (tor-ddos).
 
 Dropping any attempt by those in our ddos list
+
+Dropping any attempt to connect to ORPort if they already have 4, whether they are in the block list or not.
 
 Accept everyone else.
 
@@ -237,17 +233,15 @@ iptables-restore < /var/tmp/iptablesRules.v4
 ipset destroy
 ```
 
-The ipsets may or may not remain intact upon reboot so if you decide to run the scripts again you may get errors. You must destroy the ipsets before running the script again.
+The ipsets will not remain intact upon reboot but won't be destroyed if you flush the iptables manually so if you decide to run the scripts again you should use the **update.sh** if you don't plan to reboot or **combined.sh** after a reboot. **update.sh** files clear your conntrack table and starts fresh. They also refresh your allow-list to the most current IP addresses for authorities and snowflake. It would be a good idea to run them from time to time.
 
-You can also use **ipset-backup.sh** before each reboot and restore them with **ipset-restore.sh**
+You can also use **ipset-backup.sh** before each reboot and restore them with **ipset-restore.sh** but they won't refresh the authorities.
 
-You can also run one of the **update** files - depending on your Tor setup -in the **update directory** to refresh everything. It saves your block lists so you don't have to start all over again but it clears your conntrack table and starts fresh.
+Run a cron job daily with **refresh-authorities.sh** to always have the most recent IP addresses.
 
 Thanks for running a relay,
 
 Cheers.
 
 **Inspired by @toralf iptables rules, adding a few twists.**
-
-
 
