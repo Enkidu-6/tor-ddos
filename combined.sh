@@ -12,7 +12,7 @@ modprobe xt_recent ip_list_tot=10000
 ORPort=443
 ipset create -exist allow-list hash:ip
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v4.txt' | sed -e '1,3d' > /var/tmp/allow
-getent ahostsv4 snowflake-01.torproject.net | awk '{ print $1 }' | sort -u >> /var/tmp/allow
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/snowflake.txt' | sed -e '1,3d' >> /var/tmp/allow
 for i in `cat /var/tmp/allow` ;
 do
 ipset add -exist allow-list $i
@@ -26,7 +26,7 @@ iptables -t mangle -A PREROUTING -p tcp --syn --destination-port $ORPort -m conn
 iptables -t mangle -A PREROUTING -p tcp --destination-port $ORPort -j ACCEPT
 ipset create -exist allow-list6 hash:ip family inet6
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v6.txt' | sed -e '1,3d' > /var/tmp/allow6
-getent ahostsv6 snowflake-01.torproject.net | awk '{ print $1 }' | sort -u >> /var/tmp/allow6
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/snowflake-v6.txt' | sed -e '1,3d' >> /var/tmp/allow6
 for i in `cat /var/tmp/allow6` ;
 do
 ipset add -exist allow-list6 $i
