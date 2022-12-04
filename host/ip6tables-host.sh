@@ -7,7 +7,7 @@ ip6address=xxxx:xxxx::xxxx
 ORPort=443
 ipset create -exist allow-list6 hash:ip family inet6
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v6.txt' | sed -e '1,3d' > /var/tmp/allow6
-getent ahostsv6 snowflake-01.torproject.net | awk '{ print $1 }' | sort -u >> /var/tmp/allow6
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/snowflake-v6.txt' | sed -e '1,3d' >> /var/tmp/allow6
 for i in `cat /var/tmp/allow6` ;
 do
 ipset add -exist allow-list6 $i
