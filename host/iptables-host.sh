@@ -10,7 +10,7 @@ ipaddress=10.1.1.2
 ORPort=443
 ipset create -exist allow-list hash:ip
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v4.txt' | sed -e '1,3d' > /var/tmp/allow
-getent ahostsv4 snowflake-01.torproject.net | awk '{ print $1 }' | sort -u >> /var/tmp/allow
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/snowflake.txt' | sed -e '1,3d' >> /var/tmp/allow
 for i in `cat /var/tmp/allow` ;
 do
 ipset add -exist allow-list $i
