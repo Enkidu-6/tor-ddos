@@ -5,7 +5,7 @@ ip6tables-save > /var/tmp/ip6tablesRules.v4
 iptables -t mangle -F
 ip6tables -t mangle -F
 sleep 1
-sysctl net.ipv4.ip_local_port_range="10000 65000"
+sysctl net.ipv4.ip_local_port_range="1025 65535"
 echo 20 > /proc/sys/net/ipv4/tcp_fin_timeout
 modprobe xt_recent ip_list_tot=10000
 #change the addresses to two of your IP addresses at a time
