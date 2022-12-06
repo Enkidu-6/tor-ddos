@@ -3,8 +3,8 @@
 #Change the IP Addresses to your own
 ipaddress1=10.1.1.2
 ipaddress2=10.1.1.3
-ipset -L ddos-$ipaddress1 | awk '{print $1}' > /var/tmp/$ipaddress1
-ipset -L ddos-$ipaddress2 | awk '{print $1}' > /var/tmp/$ipaddress2
+ipset -L tor-$ipaddress1 | awk '{print $1}' > /var/tmp/$ipaddress1
+ipset -L tor-$ipaddress2 | awk '{print $1}' > /var/tmp/$ipaddress2
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/relays-v4.txt' > /var/tmp/file2
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/dual-or.txt' > /var/tmp/dual-or
 cd /var/tmp
@@ -24,26 +24,26 @@ case $yn in
               cd /var/tmp ;
               for i in `cat remove` ;
               do
-              ipset del ddos-$ipaddress1 $i
+              ipset del tor-$ipaddress1 $i
               done;
               perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  $ipaddress2 file2 > /var/tmp/remove2 ; 
               cd /var/tmp ;
               for i in `cat remove2` ;
               do
-              ipset del ddos-$ipaddress2 $i
+              ipset del tor-$ipaddress2 $i
               done;;
               
 	d ) perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  $ipaddress1 dual-or > /var/tmp/dual ;
               cd /var/tmp ;
               for i in `cat dual` ;
               do
-              ipset del ddos-$ipaddress1 $i
+              ipset del tor-$ipaddress1 $i
               done;
               perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  $ipaddress2 dual-or > /var/tmp/dual2 ;
               cd /var/tmp ;
               for i in `cat dual2` ;
               do
-              ipset del ddos-$ipaddress2 $i
+              ipset del tor-$ipaddress2 $i
               done;;
             
 	n ) echo exiting...;
