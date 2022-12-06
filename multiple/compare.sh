@@ -1,5 +1,6 @@
 #!/bin/bash
 # set -x
+#Change the IP Addresses to your own
 ipaddress1=10.1.1.2
 ipaddress2=10.1.1.3
 ipset -L ddos-$ipaddress1 | awk '{print $1}' > /var/tmp/$ipaddress1
