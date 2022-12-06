@@ -9,7 +9,7 @@ perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  file1 file2
 echo -e "\033[0;32mRelays with two Tor instances:\033[0m"
 perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  file1 dual-or
 
-read -p "Remove All 'a'. Only the ones with Dual OR ports 'd'. Do Nothing 'n'  (a/d/n) " yn
+read -p "Remove All 'a'. Only the ones with Dual ORPorts 'd'. Do Nothing 'n'  (a/d/n) " yn
 
 case $yn in 
         a ) perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  file1 file2 > /var/tmp/remove ; 
