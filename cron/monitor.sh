@@ -2,7 +2,7 @@
 # set -x
 date >> /var/tmp/ipset.log
 date >> /var/tmp/relays.log
-ipset -L tor-ddos | wc -l >> /var/tmp/ipset.log
+/usr/sbin/ipset -L tor-ddos | wc -l >> /var/tmp/ipset.log
 echo '----------------------------' >> /var/tmp/ipset.log
 /usr/sbin/ipset -L tor-ddos | awk '{print $1}' > /var/tmp/file1
 if [[ ! -e /var/tmp/file2 ]]; then
