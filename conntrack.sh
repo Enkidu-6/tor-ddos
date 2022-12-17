@@ -10,12 +10,12 @@ cd /var/tmp
 echo -e "\033[1;37m`cat 5 | grep -v ' 1 ' | grep -v ' 2 '`\033[0m"
 echo -e "\033[1;32mTwo connections, Relays:\033[0m"
 cat 5 | grep ' 2 ' | awk '{ print $2 }' > 6 
-echo -e "   \033[1;36m`perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  6 file2 | wc -l`\033[1;37m Relays out of \033[1;36m`cat 6 | wc -l`\033[1;37m IPs with two connections\033[0m"
+echo -e "\033[1;37m There are \033[1;36m`cat 6 | wc -l`\033[1;37m IPs with two connections \033[1;36m`perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  6 file2 | wc -l` \033[1;37mof which are Relays\033[0m"
 echo -e "\033[1;32mTwo connections, dual-or:\033[0m"
-echo -e "   \033[1;36m`perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  6 dual-or | wc -l`\033[1;37m Dual-OR Relays out of \033[1;36m`cat 6 | wc -l`\033[1;37m IPs with two connections\033[0m"
+echo -e "\033[1;37m There are \033[1;36m`cat 6 | wc -l`\033[1;37m IPs with two connections \033[1;36m`perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  6 dual-or | wc -l` \033[1;37mof which are Dual-OR Relays\033[0m"
 echo -e "\033[1;32mOne connection, Relays:\033[0m"
 cat 5 | grep ' 1 ' | awk '{ print $2 }' > 7
-echo -e "   \033[1;36m`perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  7 file2 | wc -l`\033[1;37m Relays out of \033[1;36m`cat 7 | wc -l`\033[1;37m IPs with one connection\033[0m"
+echo -e "\033[1;37m There are \033[1;36m`cat 7 | wc -l`\033[1;37m IPs with one connection \033[1;36m`perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  7 file2 | wc -l` \033[1;37mof which are Relays\033[0m"
 echo -e "\033[1;32mOne connection, dual-or:\033[0m"
-echo -e "   \033[1;36m`perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  7 dual-or | wc -l`\033[1;37m Dual-OR Relays out of \033[1;36m`cat 7 | wc -l`\033[1;37m IPs with one connection\033[0m"
+echo -e "\033[1;37m There are \033[1;36m`cat 7 | wc -l`\033[1;37m IPs with one connection \033[1;36m`perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  7 dual-or | wc -l` \033[1;37mof which are Dual-OR Relays\033[0m"
 /bin/rm -r 5 6 7
