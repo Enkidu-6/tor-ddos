@@ -7,7 +7,6 @@ cd /var/tmp
 echo -e "\033[1;32mAll relays in Block list:\033[1;37m"
 perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  file1 file2
 echo -e "\033[1;32mRelays with two Tor instances:\033[1;37m"
-
 perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  file1 dual-or
 
 read -p "Remove All 'a'. Only the ones with Dual OR ports 'd'. Do Nothing 'n'  (a/d/n) " yn
