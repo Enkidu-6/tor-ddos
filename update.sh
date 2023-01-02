@@ -3,7 +3,7 @@
 #Only to update from version 5.0.0 or above.
 #List all your IP Addresses and their listening port in forms of 10.1.1.1:443 and [abcd:abcd::abcd]:443
 #one line at a time in ipv4.txt and ipv6.txt respectively and place them in the same directory.
-multi () {
+update () {
 echo -e '#!/bin/bash\n# set -x'
 echo -e 'iptables-save > /var/tmp/iptablesRules.v4\nip6tables-save > /var/tmp/ip6tablesRules.v4'
 echo -e 'ipset save -f /var/tmp/ipset.full\nipset destroy\nsleep 1'
@@ -48,7 +48,7 @@ for i in "${!ARRAY[@]}"; do
    printf "ip6tables -t mangle -A PREROUTING -p tcp --destination %s --destination-port %s -j ACCEPT\n" "${ARRAY[i]}" "${ARRAY2[i]}"
 done
 }
-multi > rules.sh
+update > rules.sh
 chmod 0700 rules.sh
 ./rules.sh
 clear
