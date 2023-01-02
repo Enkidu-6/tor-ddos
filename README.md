@@ -192,11 +192,7 @@ iptables-restore < /var/tmp/iptablesRules.v4
 ipset destroy
 ```
 
-The ipsets will not remain intact upon reboot but won't be destroyed if you flush the iptables manually so if you decide to run the scripts again you should use the **update.sh** if you don't plan to reboot or **combined.sh** after a reboot. **update.sh** files clear your conntrack table and starts fresh. They also refresh your allow-list to the most current IP addresses for authorities and snowflake. It would be a good idea to run them from time to time.
-
-You can also use **ipset-backup.sh** before each reboot and restore them with **ipset-restore.sh** but they won't refresh the authorities.
-
-Run a cron job daily with **refresh-authorities.sh** to always have the most recent IP addresses.
+The ipsets will not remain intact upon reboot but won't be destroyed if you flush the iptables manually.
 
 Thanks for running a relay,
 
