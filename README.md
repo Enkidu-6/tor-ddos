@@ -15,7 +15,7 @@ So this is how it goes:
 ```
 wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/multi.sh
 wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/ipv4.txt
-wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/ipv6.sh
+wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/ipv6.txt
 
 ```
 Replace the contents of ipv4.txt and ipv6.txt with your own
