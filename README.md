@@ -1,3 +1,7 @@
+# How to combat Tor Relay DDoS in 10 Seconds!
+
+**It would be a good idea to follow [The main repository](https://github.com/Enkidu-6/tor-ddos) to be notified of any updates.**
+
 # Update
 This is a major update. The scripts and the ipsets naming conventions have changed. The script will remove your current rules in mangle table and replaces them with the new ones. The ipset lists will populate from scratch. No reboot or restart of Tor is necessary and there will be no down time.
 
