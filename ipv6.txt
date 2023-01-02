@@ -2,4 +2,3 @@
 [abcd:efab:cdef:abcd::1]:443
 [abcd:efab:cdef:abcd::1]:80
 [abcd:efab:cdef:abcd::2]:444
-[abcd:efab:cdef:abcd::3]:555
