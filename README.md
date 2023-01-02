@@ -8,6 +8,9 @@ If you don't want to read the rest, all you need is to populate the sample files
 The IP files can contain multiple addresses, multiple Address port combinations or in case of ipv6.txt it can be empty if you don't have an IPV6 address.
 All files must be in the same directory and some other scripts also rely on the IP files to be present.
 
+You need iptables, ipset and curl on your system. Type iptables -V ipset -V and curl -V to find out if you have them. Almost all linux systems come with iptables / nf_tables. Some may not have have ipset and / or curl. Getting them is as simple as typing apt install / yum install / dnf install / etc ... curl ipset.
+
+
 **You must be root or use sudo to run the scripts**
 
 So this is how it goes:
