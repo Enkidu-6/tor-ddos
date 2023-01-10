@@ -34,7 +34,7 @@ for i in "${!array[@]}"; do
    printf "ipset create tor-%s-%s hash:ip family inet hashsize 4096 timeout 43200\n" "${array[i]}" "${array2[i]}"
    printf "iptables -t mangle -I PREROUTING -p tcp --destination %s --dport %s -m set --match-set allow-list src -j ACCEPT\n" "${array[i]}" "${array2[i]}"
    printf "iptables -t mangle -A PREROUTING -p tcp --destination %s --destination-port %s -m recent --name ddos-%s-%s --set\n" "${array[i]}" "${array2[i]}" "${array[i]}" "${array2[i]}"   
-   printf "iptables -t mangle -A PREROUTING -p tcp --syn -destination %s --destination-port %s -m set --match-set dual-or src -m connlimit --connlimit-mask 32 --connlimit-upto 2 -j ACCEPT\n" "${array[i]}" "${array2[i]}"   
+   printf "iptables -t mangle -A PREROUTING -p tcp --syn --destination %s --destination-port %s -m set --match-set dual-or src -m connlimit --connlimit-mask 32 --connlimit-upto 2 -j ACCEPT\n" "${array[i]}" "${array2[i]}"   
    printf "iptables -t mangle -A PREROUTING -p tcp --destination %s --destination-port %s -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-%s-%s src\n" "${array[i]}" "${array2[i]}" "${array[i]}" "${array2[i]}"
    printf "iptables -t mangle -A PREROUTING -p tcp --destination %s --destination-port %s -m set --match-set tor-%s-%s src -j DROP\n" "${array[i]}" "${array2[i]}" "${array[i]}" "${array2[i]}"
    #printf "iptables -t mangle -A PREROUTING -p tcp --syn --destination %s --destination-port %s -m hashlimit --hashlimit-name TOR-%s-%s --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 30/hour --hashlimit-burst 4 --hashlimit-htable-expire 120000 -j DROP\n" "${array[i]}" "${array2[i]}" "${array[i]}" "${array2[i]}" 
@@ -50,7 +50,7 @@ for i in "${!ARRAY[@]}"; do
    printf "ipset create tor-%s-%s hash:ip family inet6 hashsize 4096 timeout 43200\n" "${ARRAY3[i]}" "${ARRAY2[i]}"
    printf "ip6tables -t mangle -I PREROUTING -p tcp --destination %s --dport %s -m set --match-set allow-list6 src -j ACCEPT\n" "${ARRAY[i]}" "${ARRAY2[i]}"
    printf "ip6tables -t mangle -A PREROUTING -p tcp --destination %s --destination-port %s -m recent --name ddos6-%s-%s --set\n" "${ARRAY[i]}" "${ARRAY2[i]}" "${ARRAY3[i]}" "${ARRAY2[i]}"
-   printf "iptables -t mangle -A PREROUTING -p tcp --syn -destination %s --destination-port %s -m set --match-set dual-or src -m connlimit --connlimit-mask 32 --connlimit-upto 2 -j ACCEPT\n" "${ARRAY[i]}" "${ARRAY2[i]}"
+   printf "ip6tables -t mangle -A PREROUTING -p tcp --syn --destination %s --destination-port %s -m set --match-set dual-or6 src -m connlimit --connlimit-mask 32 --connlimit-upto 2 -j ACCEPT\n" "${ARRAY[i]}" "${ARRAY2[i]}"
    printf "ip6tables -t mangle -A PREROUTING -p tcp --destination %s --destination-port %s -m connlimit --connlimit-mask 128 --connlimit-above 2 -j SET --add-set tor-%s-%s src\n" "${ARRAY[i]}" "${ARRAY2[i]}" "${ARRAY3[i]}" "${ARRAY2[i]}"
    printf "ip6tables -t mangle -A PREROUTING -p tcp --destination %s --destination-port %s -m set --match-set tor-%s-%s src -j DROP\n" "${ARRAY[i]}" "${ARRAY2[i]}" "${ARRAY3[i]}" "${ARRAY2[i]}"
    #printf "ip6tables -t mangle -A PREROUTING -p tcp --syn --destination %s --destination-port %s -m hashlimit --hashlimit-name TOR6-%s-%s --hashlimit-mode srcip --hashlimit-srcmask 128 --hashlimit-above 30/hour --hashlimit-burst 4 --hashlimit-htable-expire 120000 -j DROP\n" "${ARRAY[i]}" "${ARRAY2[i]}" "${ARRAY3[i]}" "${ARRAY2[i]}"
@@ -60,7 +60,7 @@ done
 }
 multi > rules.sh
 chmod 0700 rules.sh
-./rules.sh
+#./rules.sh
 clear
 echo -e "\033[1;37m                                 All done!" 
 echo -e "Look for a file named rules.sh in this directory. It contains all the rules that were applied for your reference."
