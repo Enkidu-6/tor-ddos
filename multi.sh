@@ -60,7 +60,7 @@ done
 }
 multi > rules.sh
 chmod 0700 rules.sh
-#./rules.sh
+./rules.sh
 clear
 echo -e "\033[1;37m                                 All done!" 
 echo -e "Look for a file named rules.sh in this directory. It contains all the rules that were applied for your reference."
