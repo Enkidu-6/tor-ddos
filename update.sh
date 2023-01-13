@@ -6,22 +6,22 @@
 update () {
 echo -e '#!/bin/bash\n# set -x'
 echo -e 'iptables-save > /var/tmp/iptablesRules.v4\nip6tables-save > /var/tmp/ip6tablesRules.v4'
-echo -e 'ipset save -f /var/tmp/ipset.full\nipset destroy\nsleep 1'
-echo -e 'iptables -t mangle -F\nip6tables -t mangle -F\nsleep 1\nipset destroy'
+echo "ipset save -f /var/tmp/ipset.full"
 echo -e 'sysctl net.ipv4.ip_local_port_range="1025 65000"\necho 20 > /proc/sys/net/ipv4/tcp_fin_timeout\nmodprobe xt_recent ip_list_tot=10000'
-echo -e 'ipset restore -exist -f /var/tmp/ipset.full\nsleep 2'
 echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v4.txt' | sed -e '1,3d' > /var/tmp/allow"
 echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/snowflake.txt' | sed -e '1,3d' >> /var/tmp/allow"
 echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authorities-v6.txt' | sed -e '1,3d' > /var/tmp/allow6"
 echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/snowflake-v6.txt' | sed -e '1,3d' >> /var/tmp/allow6"
 echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/dual-or.txt' | sed -e '1,3d' > /var/tmp/multi"
 echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/dual-or-v6.txt' | sed -e '1,3d' > /var/tmp/multi6"
+echo -e 'iptables -t mangle -F\nip6tables -t mangle -F\nsleep 1'
 echo "ipset flush allow-list"
 echo -e 'for i in `cat /var/tmp/allow` ;\ndo\nipset add -exist allow-list $i\ndone;'
 echo "/bin/rm -r /var/tmp/allow"
 echo "ipset flush allow-list6"
 echo -e 'for i in `cat /var/tmp/allow6` ;\ndo\nipset add -exist allow-list6 $i\ndone;'
 echo "/bin/rm -r /var/tmp/allow6"
+echo "ipset create -exist dual-or hash:ip"
 echo "ipset flush dual-or"
 echo -e 'for i in `cat /var/tmp/multi` ;\ndo\nipset add -exist dual-or $i\ndone;'
 echo "/bin/rm -r /var/tmp/multi"
