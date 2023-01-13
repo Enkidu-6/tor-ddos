@@ -25,6 +25,8 @@ echo "ipset create -exist dual-or hash:ip"
 echo "ipset flush dual-or"
 echo -e 'for i in `cat /var/tmp/multi` ;\ndo\nipset add -exist dual-or $i\ndone;'
 echo "/bin/rm -r /var/tmp/multi"
+echo "ipset create -exist dual-or6 hash:ip family inet6"
+echo "ipset flush dual-or6"
 echo -e 'for i in `cat /var/tmp/multi6` ;\ndo\nipset add -exist dual-or6 $i\ndone;'
 echo "/bin/rm -r /var/tmp/multi6"
 
