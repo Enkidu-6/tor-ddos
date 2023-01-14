@@ -1,5 +1,5 @@
 # Update
-This is a major update. The scripts and the ipsets naming conventions have changed. The script will remove your current rules in mangle table and replaces them with the new ones. The ipset lists will populate from scratch. No reboot or restart of Tor is necessary and there will be no down time.
+There's now a new additional ipset. The script will remove your current rules in mangle table and replaces them with the new ones. The old ipsets remain intact. No reboot or restart of Tor is necessary and there will be no down time. **update-authotities.sh** has changed and must be replaced manually.
 
 # TLDR Version
 
