@@ -8,7 +8,7 @@ If you don't want to read the rest, all you need is to populate the sample files
 The IP files can contain multiple addresses, multiple Address port combinations or in case of ipv6.txt it can be empty if you don't have an IPV6 address.
 All files must be in the same directory and some other scripts also rely on the IP files to be present.
 
-You need iptables, ipset and curl on your system. Type iptables -V ipset -V and curl -V to find out if you have them. Almost all linux systems come with iptables / nf_tables. Some may not have have ipset and / or curl. Getting them is as simple as typing apt install / yum install / dnf install / etc ... curl ipset.
+You need iptables, ipset and curl on your system. Type iptables -V ipset -V and curl -V to find out if you have them. Almost all linux systems come with iptables / nf_tables. Some may not have have ipset and / or curl. Getting them is as simple as typing apt install curl ipset / yum install curl ipset / dnf install curl ipset / etc ... 
 
 
 **You must be root or use sudo to run the scripts**
@@ -40,7 +40,7 @@ ipset destroy
 ```
 It will also create a file by the name **rules.sh** that contains all the rules in plain text so you can see what was applied.
 
-**You must run a daily cron job with ***refresh-authorities.sh*** to keep the list of IPs for tor authorities and snowflake servers up to date.**
+**You must run a daily cron job with ***refresh-authorities.sh*** to keep the list of IPs for tor authorities, snowflake servers and dual-or relays up to date.**
 From the same directory as the script, type:
 ```
 (crontab -l ; echo "0 0 * * * /$PWD/refresh-authorities.sh") | crontab -
@@ -62,16 +62,11 @@ They stay in the list for a maximum of 12 hours and then released, unless they b
 
 Every time you run **compare.sh** you are given the option to either automatically remove all the relays or only the relays that are running two instances of Tor from the block list.
 
-You can also remove those relays periodically from your block list using the simpler scripts suitable for a cron job mainly **remove.sh** and remove-dual-or.sh Use them as you see fit.
-
-For example from the same directory as the script you can type the following in terminal:
-
-```
-(crontab -l ; echo "*/15 * * * * /$PWD/remove-dual-or.sh") | crontab - 
-```
-It will check and remove all dual-or relays from your block list once every 15 minutes. You can play with the time interval until you find a number you're happy with.
+You can also remove those relays periodically from your block list using the simpler scripts suitable for a cron job mainly **remove.sh** and remove-dual-or.sh Use them as you see fit. You can play with the time interval until you find a number you're happy with.
 
 **conntrack.sh** will check your conntrack table and gives you a count and show you how many of your connections belong to relays. It will also list IP addresses that have more than 2 connections.
+
+**update.sh** can be used to update your rules from a lower version to a higher one. It will also create a file named **update-rules.sh** which shows the rules in plain text for your review. It won't work after a reboot though. You must always run **multi.sh** after a reboot since all ipsets are removed upon reboot.
 
   
 # tor-ddos The long version
@@ -155,7 +150,7 @@ Controlled lab tests clearly show that when using **iptables INPUT** with **filt
 
 # Finally, the rules:
 
-I have moved all the rules exclusively to mangle table and PREROUTING. They are ORPort specific, which means they will not affect your current rules in the filter table. Also, virtually any Linux flavor I know comes with an empty mangle table with universal ALLOW rules.
+I have moved all the rules exclusively to mangle table and PREROUTING. They are ORPort specific, which means they will not affect your current rules in the filter table. Also, virtually any Linux flavor I know comes with an empty mangle table with universal ALLOW rules. It also makes reversing the effects of the rules easy as all you need to do is to clear the mangle table.
 
 ```
 iptables-save > /var/tmp/iptablesRules.v4
@@ -167,10 +162,11 @@ ipset create -exist allow-list hash:ip
 ipset create tor-$ipaddress-$ORPort hash:ip family inet hashsize 4096 timeout 43200
 iptables -t mangle -I PREROUTING -p tcp --destination $ipaddress --dport $ORPort -m set --match-set allow-list src -j ACCEPT
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m recent --name ddos-$ipaddress-$ORPort --set
+iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m set --match-set dual-or src -m connlimit --connlimit-mask 32 --connlimit-upto 2 -j ACCEPT
+iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-$ipaddress-$ORPort src
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-$ipaddress-$ORPort src
-iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress -m set --match-set tor-$ipaddress-$ORPort src -j DROP
-iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort -m conntrack --ctstate NEW -m hashlimit --hashlimit-name TOR-$ipaddress --hashlimit-mode srcip --hashlimit-srcmask 32 --hashlimit-above 30/hour --hashlimit-burst 1 --hashlimit-htable-expire 120000 -j DROP
-iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j DROP
+iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m set --match-set tor-$ipaddress-$ORPort src -j DROP
+iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 1 -j DROP
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -j ACCEPT
 ```
 
@@ -180,12 +176,14 @@ This is what the rules will do:
 - Clear the mangle table.
 - Increase the local port range. Reduce the fin timeout. Increase the size of ip_list_tot.
 - Create an allow-list and list the IP addresses of Tor authorities and snowflake so they're free to do what they need.
+- Create a list of relays with two ORPorts
 - keep track of connections in a file named ddos-$ipaddress-$ORPort which will reside in /proc/net/xt_recent/
+- Allow relays with two ORPorts to have up to two connections.
 - Create an ipset to put the bad guys in.
-- Put any ip address that attempts more than two concuurent requests in the list.
-- Drop any future attempts from thoose in the list for 12 hours.
-- Throttle their attempted connections after having two to one every two minutes and drop the rest
-- set a maximum of two connection allowed to our ORPort whether they are in our list or not.
+- Put any ip address that attempts more than two concurrent requests in the list.
+- Put any ip address that didn't make concurrent request but already has more than two connections in the list.
+- Drop any future attempts from those in the list for 12 hours.
+- set a maximum of one connection per IP to our ORPort for those not in our lists.
 - Accept everyone else.
 
 That's it. Just remember, anytime you reload your firewall, all these iptables rules are erased. At least I'm sure that's what happens with firewall-cmd --reload. Also a reboot will reset your iptables rules to default rules that came with your system.  Nevertheless we save the original rules so we can restore them with the following command if anything goes wrong:
