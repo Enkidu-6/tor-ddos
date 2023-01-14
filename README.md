@@ -177,13 +177,13 @@ This is what the rules will do:
 - Increase the local port range. Reduce the fin timeout. Increase the size of ip_list_tot.
 - Create an allow-list and list the IP addresses of Tor authorities and snowflake so they're free to do what they need.
 - Create a list of relays with two ORPorts
-- keep track of connections in a file named ddos-$ipaddress-$ORPort which will reside in /proc/net/xt_recent/
+- Keep track of connections in a file named ddos-$ipaddress-$ORPort which will reside in /proc/net/xt_recent/
 - Allow relays with two ORPorts to have up to two connections.
 - Create an ipset to put the bad guys in.
 - Put any ip address that attempts more than two concurrent requests in the list.
 - Put any ip address that didn't make concurrent request but already has more than two connections in the list.
 - Drop any future attempts from those in the list for 12 hours.
-- set a maximum of one connection per IP to our ORPort for those not in our lists.
+- Allow a maximum of one connection per IP to our ORPort for those not in our lists.
 - Accept everyone else.
 
 That's it. Just remember, anytime you reload your firewall, all these iptables rules are erased. At least I'm sure that's what happens with firewall-cmd --reload. Also a reboot will reset your iptables rules to default rules that came with your system.  Nevertheless we save the original rules so we can restore them with the following command if anything goes wrong:
