@@ -70,14 +70,17 @@ chmod 0700 dynamic-rules.sh
 ./dynamic-rules.sh
 clear
 echo -e "\033[1;37m                                 All done!" 
-echo -e "Look for a file named dynamic-rules.sh in this directory. It contains all the rules that were applied for your reference."
-echo -e "From now on, you can run dynamic-rules.sh instead of this script. DO NOT change your IP addresses in ipv4.txt and ipv6.txt even if you get a new IP address.\033[0m"
-sleep 5
+echo -e "Look for a file named dynamic-rules.sh in this directory."
+echo -e "It contains all the rules that were applied for your reference."
+echo -e "From now on, you can run dynamic-rules.sh instead of this script." 
+echo -e "DO NOT change your IP addresses in ipv4.txt and ipv6.txt" 
+echo -e "even if you get a new IP address.\033[0m"
+sleep 8
 clear
 echo -e "\033[1;37mThis script will list the rules in your mangle table in 5 seconds"
 echo -e "You can check the rules and make sure they have been applied properly"
 echo -e "Press control c to stop .......\033[0m"
-sleep 7
+sleep 5
 iptables -S -t mangle
 echo -e "\033[1;37mYou should check your ip6tables rules as well by typing ip6tables -S -t mangle"
 echo -e "Exiting ....\033[0m"
