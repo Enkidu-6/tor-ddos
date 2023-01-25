@@ -1,0 +1,2 @@
+# Replace "eth0" below with the name of your own interface. Remove this comment before saving.
+eth0
