@@ -19,11 +19,11 @@ echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/s
 echo -e 'for i in `cat /var/tmp/allow6` ;\ndo\nipset add -exist allow-list6 $i\ndone;'
 echo "/bin/rm -r /var/tmp/allow6"
 echo 'ipset create -exist dual-or hash:ip'
-echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/dual-or.txt' | sed -e '1,3d' > /var/tmp/multi"
+echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/2-or.txt' | sed -e '1,3d' > /var/tmp/multi"
 echo -e 'for i in `cat /var/tmp/multi` ;\ndo\nipset add -exist dual-or $i\ndone;'
 echo "/bin/rm -r /var/tmp/multi"
 echo 'ipset create -exist dual-or6 hash:ip family inet6'
-echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/dual-or-v6.txt' | sed -e '1,3d' > /var/tmp/multi6"
+echo "curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/2-or-v6.txt' | sed -e '1,3d' > /var/tmp/multi6"
 echo -e 'for i in `cat /var/tmp/multi6` ;\ndo\nipset add -exist dual-or6 $i\ndone;'
 echo "/bin/rm -r /var/tmp/multi6"
 echo 'ipset create -exist 4-or hash:ip'
