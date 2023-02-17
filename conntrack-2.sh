@@ -43,7 +43,7 @@ cat 5 | grep -v ' 1 ' | grep -v ' 2 ' | awk '{ print $2 }' > 8
 
 echo -e "\033[1;37m There are \033[1;36m`cat 8 | wc -l`\033[1;37m IPs With More than Two connections" 
 echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  8 file2 | wc -l` \033[1;37mRelays" 
-echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  8 dual-or | wc -l` \033[1;37mmulti-OR"
+echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  8 dual-or | wc -l` \033[1;37mMulti-OR"
 echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  8 snow | wc -l` \033[1;37msnowflake\033[0m" 
 
 echo -e "\033[1;32mIPs with Two connections:\033[0m"
@@ -51,12 +51,12 @@ cat 5 | grep ' 2 ' | awk '{ print $2 }' > 6
 
 echo -e "\033[1;37m There are \033[1;36m`cat 6 | wc -l`\033[1;37m IPs with Two connections"
 echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  6 file2 | wc -l` \033[1;37mRelays\033[0m"
-echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  6 dual-or | wc -l` \033[1;37mDual-OR\033[0m"
+echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  6 dual-or | wc -l` \033[1;37mMulti-OR\033[0m"
 
 echo -e "\033[1;32mIPs with One connection:\033[0m"
 cat 5 | grep ' 1 ' | awk '{ print $2 }' > 7
 
 echo -e "\033[1;37m There are \033[1;36m`cat 7 | wc -l`\033[1;37m IPs With One connection"
 echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  7 file2 | wc -l` \033[1;37mRelays"
-echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  7 dual-or | wc -l` \033[1;37mDual-OR\033[0m"
+echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  7 dual-or | wc -l` \033[1;37mMulti-OR\033[0m"
 /bin/rm -r 5 6 7 8 snow
