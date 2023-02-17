@@ -2,9 +2,10 @@
 # set -x
 # You can run this script if you have a dynamic IP address. You can NOT run this script if 
 # you have more than one IPV4 and one IPV6 associated with your NIC or if you have more than one NIC.
-# List your current IP Addresses and your listening port in forms of 10.1.1.1:443 and [abcd:abcd::abcd]:443 
-# one line at a time in ipv4.txt and ipv6.txt respectively. Put your ethernet's name e.g eth0, ens18, etc... in nic.txt
-# and place them all in the same directory before running this script.
+# List your current IP and IPV6 Addresses and your listening port in forms of 10.1.1.1:443 and [abcd:abcd::abcd]:443 
+# in ipv4.txt and ipv6.txt respectively. Put your ethernet's name e.g eth0, ens18, etc... in nic.txt
+# and place them all in the same directory before running this script. Never change the IP address in ipv4.txt and ipv6.txt
+# after running the script even if your IP address changes later.
 multi () {
 echo -e '#!/bin/bash\n# set -x'
 echo -e 'iptables-save > /var/tmp/iptablesRules.v4\nip6tables-save > /var/tmp/ip6tablesRules.v4'
