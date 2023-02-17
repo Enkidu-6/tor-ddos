@@ -2,7 +2,7 @@
 # set -x
 if [[ ! -e /proc/net/nf_conntrack ]]; then
 clear
-echo -e "\033[1;32mYour system does not come with nf_conntrack.\nPlease install conntrack utilities\nif you don't already have it.\n'apt install conntrack' and use conntrack-2.sh\033[0m"
+echo -e "\033[1;32mYour system does not come with nf_conntrack. Please install\nconntrack utilities if you don't already have it.\n'apt install conntrack' and use conntrack-2.sh\033[0m"
 exit 1
 fi
 
