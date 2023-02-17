@@ -19,10 +19,10 @@ do
 
 echo -e "\033[1;32mAll relays in tor-$i:\033[1;37m"
 perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  /var/tmp/$i /var/tmp/file2
-echo -e "\033[1;32mRelays with two Tor instances in tor-$i:\033[1;37m"
+echo -e "\033[1;32mRelays with multiple Tor instances in tor-$i:\033[1;37m"
 perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  /var/tmp/$i /var/tmp/dual-or
 
-read -p "Remove All 'a'. Only the ones with Dual OR ports 'd'. Do Nothing 'n'  (a/d/n) " yn
+read -p "Remove All 'a'. Only the ones with multiple OR ports 'm'. Do Nothing 'n'  (a/m/n) " yn
 
 case $yn in 
         a ) perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  /var/tmp/$i /var/tmp/file2 > /var/tmp/remove-$i ; 
@@ -31,7 +31,7 @@ case $yn in
               /usr/sbin/ipset del tor-$i $b
               done;;
               
-	d ) perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  /var/tmp/$i /var/tmp/dual-or > /var/tmp/dual-$i ;
+	m ) perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  /var/tmp/$i /var/tmp/dual-or > /var/tmp/dual-$i ;
               for b in `cat /var/tmp/dual-$i` ;
               do
               /usr/sbin/ipset del tor-$i $b
