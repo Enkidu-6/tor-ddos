@@ -1,5 +1,7 @@
 # Update
-There's now a new additional ipset. The script will remove your current rules in mangle table and replaces them with the new ones. The old ipsets remain intact. No reboot or restart of Tor is necessary and there will be no down time. **update-authotities.sh** has changed and must be replaced manually.
+If you're already running an older version, simply use **.update.sh**. There will be no down time. This is a major change as we now have additional rulesets and a new  ipset to deal with relays with more than two ORPorts.
+
+As a result **conntrack.sh (both versions)**, **compare.sh**, **remove-dual-or.sh** and **refresh-authorities.sh** have also changed.
 
 # TLDR Version
 
