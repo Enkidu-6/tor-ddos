@@ -59,4 +59,4 @@ cat 5 | grep ' 1 ' | awk '{ print $2 }' > 7
 echo -e "\033[1;37m There are \033[1;36m`cat 7 | wc -l`\033[1;37m IPs With One connection"
 echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  7 file2 | wc -l` \033[1;37mRelays"
 echo -e "\033[1;36m           `perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/'  7 dual-or | wc -l` \033[1;37mMulti-OR\033[0m"
-/bin/rm -r 5 6 7 8 snow
+/bin/rm -r 5 6 7 8 
