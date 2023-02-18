@@ -3,6 +3,8 @@ If you're already running an older version, simply use **.update.sh**. There wil
 
 As a result **conntrack.sh (both versions)**, **compare.sh**, **remove-dual-or.sh** and **refresh-authorities.sh** have also changed.
 
+[Release notes / changelog](https://github.com/Enkidu-6/tor-ddos/releases/tag/v6.0.0)
+
 # TLDR Version
 
 If you don't want to read the rest, all you need is to populate the sample files **ipv4.txt** and **ipv6.txt** with your actual IPaddress:port, then chmod 0700 multi.sh and run ./multi.sh
