@@ -47,13 +47,13 @@ It will also create a file by the name **rules.sh** that contains all the rules 
 **You must run a daily cron job with ***refresh-authorities.sh*** to keep the list of IPs for tor authorities, snowflake servers and dual-or relays up to date.**
 From the same directory as the script, type:
 ```
-(crontab -l ; echo "0 0 * * * /$PWD/refresh-authorities.sh") | crontab -
+(crontab -l ; echo "0 0 * * * $PWD/refresh-authorities.sh") | crontab -
 ```
 If you've never set up a cron jub under that user, you'll get a message like this:
 
 **no crontab for $USER** 
 
-Don't worry, it'll create one. Don't run it again or you'll have a duplicate cron job.
+Don't worry, it'll create one. Don't run it again or you'll have a duplicate cron job. Type crontab -l to make sure it's there and the path is correct.
 
 To see the IP addresses that are caught in the block list at any time you can type:
 
@@ -64,7 +64,7 @@ Run **compare.sh** file to simply check the block list against the list of all t
 
 They stay in the list for a maximum of 12 hours and then released, unless they break the rules again.
 
-Every time you run **compare.sh** you are given the option to either automatically remove all the relays or only the relays that are running two instances of Tor from the block list.
+Every time you run **compare.sh** you are given the option to either automatically remove all the relays or only the relays that are running multiple instances of Tor from the block list.
 
 You can also remove those relays periodically from your block list using the simpler scripts suitable for a cron job mainly **remove.sh** and remove-dual-or.sh Use them as you see fit. You can play with the time interval until you find a number you're happy with.
 
@@ -166,6 +166,7 @@ ipset create -exist allow-list hash:ip
 ipset create tor-$ipaddress-$ORPort hash:ip family inet hashsize 4096 timeout 43200
 iptables -t mangle -I PREROUTING -p tcp --destination $ipaddress --dport $ORPort -m set --match-set allow-list src -j ACCEPT
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m recent --name ddos-$ipaddress-$ORPort --set
+iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m set --match-set 4-or src -m connlimit --connlimit-mask 32 --connlimit-upto 4 -j ACCEPT
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m set --match-set dual-or src -m connlimit --connlimit-mask 32 --connlimit-upto 2 -j ACCEPT
 iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-$ipaddress-$ORPort src
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-$ipaddress-$ORPort src
@@ -180,8 +181,10 @@ This is what the rules will do:
 - Clear the mangle table.
 - Increase the local port range. Reduce the fin timeout. Increase the size of ip_list_tot.
 - Create an allow-list and list the IP addresses of Tor authorities and snowflake so they're free to do what they need.
+- create a list of relays with more than two ORPorts
 - Create a list of relays with two ORPorts
 - Keep track of connections in a file named ddos-$ipaddress-$ORPort which will reside in /proc/net/xt_recent/
+- Allow relays with more than two instances of Tor to have one connection per instance.
 - Allow relays with two ORPorts to have up to two connections.
 - Create an ipset to put the bad guys in.
 - Put any ip address that attempts more than two concurrent requests in the list.
