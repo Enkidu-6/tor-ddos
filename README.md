@@ -53,7 +53,7 @@ If you've never set up a cron jub under that user, you'll get a message like thi
 
 **no crontab for $USER** 
 
-Don't worry, it'll create one. Don't run it again or you'll have a duplicate cron job.
+Don't worry, it'll create one. Don't run it again or you'll have a duplicate cron job. Type crontab -l to make sure it's there and the path is correct.
 
 To see the IP addresses that are caught in the block list at any time you can type:
 
