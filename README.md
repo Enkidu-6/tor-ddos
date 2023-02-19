@@ -47,7 +47,7 @@ It will also create a file by the name **rules.sh** that contains all the rules 
 **You must run a daily cron job with ***refresh-authorities.sh*** to keep the list of IPs for tor authorities, snowflake servers and dual-or relays up to date.**
 From the same directory as the script, type:
 ```
-(crontab -l ; echo "0 0 * * * /$PWD/refresh-authorities.sh") | crontab -
+(crontab -l ; echo "0 0 * * * $PWD/refresh-authorities.sh") | crontab -
 ```
 If you've never set up a cron jub under that user, you'll get a message like this:
 
