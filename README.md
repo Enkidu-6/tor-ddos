@@ -1,9 +1,7 @@
 # Update
-If you're already running an older version, simply use **.update.sh**. There will be no down time. This is a major change as we now have additional rulesets and a new  ipset to deal with relays with more than two ORPorts.
+The contents of refresh-authorities.sh has changed. Please replace your current copy with the new one to ensure your ipset is properly populated.
 
-As a result **conntrack.sh (both versions)**, **compare.sh**, **remove-dual-or.sh** and **refresh-authorities.sh** have also changed.
-
-[Release notes / changelog](https://github.com/Enkidu-6/tor-ddos/releases/tag/v6.0.0)
+[Release notes / changelog](https://github.com/Enkidu-6/tor-ddos/releases/tag/v6.1.0)
 
 # TLDR Version
 
