@@ -6,8 +6,8 @@ curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/authori
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/snowflake-v6.txt' | sed -e '1,3d' >> /var/tmp/allow6
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/2-or.txt' | sed -e '1,3d' > /var/tmp/multi
 curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/2-or-v6.txt' | sed -e '1,3d' > /var/tmp/multi6
-curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/4-or.txt' | sed -e '1,3d' > /var/tmp/4or
-curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/4-or-v6.txt' | sed -e '1,3d' > /var/tmp/4or6
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/above2-or.txt' | sed -e '1,3d' > /var/tmp/4or
+curl -s 'https://raw.githubusercontent.com/Enkidu-6/tor-relay-lists/main/above2-or-v6.txt' | sed -e '1,3d' > /var/tmp/4or6
 /usr/sbin/ipset flush allow-list
 for i in `cat /var/tmp/allow` ;
 do
