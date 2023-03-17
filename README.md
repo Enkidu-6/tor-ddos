@@ -1,7 +1,7 @@
 # Update
 The contents of refresh-authorities.sh has changed. Please replace your current copy with the new one to ensure your ipset is properly populated.
 
-[Release notes / changelog](https://github.com/Enkidu-6/tor-ddos/releases/tag/v6.1.0)
+[Release notes / changelog](https://github.com/Enkidu-6/tor-ddos/releases)
 
 # TLDR Version
 
