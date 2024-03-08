@@ -1,4 +1,0 @@
-# This is a sample. Replace with your own IP address/addresses and remove this comment. Leave this file empty if you don't have IPV6.
-[abcd:efab:cdef:abcd::1]:443
-[abcd:efab:cdef:abcd::1]:80
-[abcd:efab:cdef:abcd::2]:444

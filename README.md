@@ -1,48 +1,36 @@
 # Update
-The contents of refresh-authorities.sh has changed. Please replace your current copy with the new one to ensure your ipset is properly populated.
+If you're updating from a previous version, Use the same download command below. The script tries to determine if you've previously used these scripts by looking for ipv4.txt anywhere on your system and if it exists, it'll give you the choice to update or start fresh.
+
+Please feel free to use the Repository's dicussion board if you need help or if you find a bug in the script.
 
 [Release notes / changelog](https://github.com/Enkidu-6/tor-ddos/releases)
 
 # TLDR Version
 
-If you don't want to read the rest, all you need is to populate the sample files **ipv4.txt** and **ipv6.txt** with your actual IPaddress:port, then chmod 0700 multi.sh and run ./multi.sh
-
-The IP files can contain multiple addresses, multiple Address port combinations or in case of ipv6.txt it can be empty if you don't have an IPV6 address.
-All files must be in the same directory and some other scripts also rely on the IP files to be present.
-
-You need iptables, ipset and curl on your system. Type iptables -V ipset -V and curl -V to find out if you have them. Almost all linux systems come with iptables / nf_tables. Some may not have have ipset and / or curl. Getting them is as simple as typing apt install curl ipset / yum install curl ipset / dnf install curl ipset / etc ... 
-
-
+If you don't want to read the rest, all you need is to run the following command:
+```sh
+bash <(curl -Ls https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/download.sh)
+```
 **You must be root or use sudo to run the scripts**
 
-So this is how it goes:
+The script will download all the files of the current release to $PWD/tor directory and will take you through the necessary steps and then applies the iptables rules for you. You don't have to do anything except answering a few questions and you're done. You need to know your IPV4 and IPV6 addresses and ORPorts.
 
-```
-wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/multi.sh
-wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/ipv4.txt
-wget https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/ipv6.txt
+If your OS is Ubuntu or Debian, the script will install conntrack utilities and ipset using apt as they don't come with them by default.
 
-```
-Replace the contents of ipv4.txt and ipv6.txt with your own
-```
-chmod a+x multi.sh
-./multi.sh
-```
+You need iptables, ipset and curl on your system. If the script fails, Type iptables -V ipset -V and curl -V to find out if you have them. Getting them is as simple as installing them from your System's native package manager.
+
+**You need to run the above script only once** Don't use the above link again unless you plan to download the repo again and replace all your files. 
+
+***After the first run, only use `multi.sh` after each reboot or `update.sh` If you don't want to reboot.***
+
+**update.sh** will save and restore your ipset lists so you don't have to start from scratch. All IP addresses in the block list will remain intact and it will also refresh your allow lists and brings them up to date.
+
 
 **That's it. You're good to go but please read on.**
 
 
-The script makes a backup of your original iptables and ip6tables rules. You can restore the original rules by either simply rebooting or running the following commands:
 
-```
-iptables-restore < /var/tmp/iptablesRules.v4
-ip6tables-restore < /var/tmp/ip6tablesRules.v4
-ipset destroy
-
-```
-It will also create a file by the name **rules.sh** that contains all the rules in plain text so you can see what was applied.
-
-**You must run a daily cron job with ***refresh-authorities.sh*** to keep the list of IPs for tor authorities, snowflake servers and dual-or relays up to date.**
+**You should run a cron job with ***refresh-authorities.sh*** daily or once every few days to keep the list of IPs for tor authorities, snowflake servers, relays and multi-or relays up to date.**
 From the same directory as the script, type:
 ```
 (crontab -l ; echo "0 0 * * * $PWD/refresh-authorities.sh") | crontab -
@@ -64,11 +52,11 @@ They stay in the list for a maximum of 12 hours and then released, unless they b
 
 Every time you run **compare.sh** you are given the option to either automatically remove all the relays or only the relays that are running multiple instances of Tor from the block list.
 
-You can also remove those relays periodically from your block list using the simpler scripts suitable for a cron job mainly **remove.sh** and remove-dual-or.sh Use them as you see fit. You can play with the time interval until you find a number you're happy with.
+You can also remove those relays periodically from your block list using the simpler scripts suitable for a cron job mainly **remove.sh** and **remove-dual-or.sh** Use them as you see fit. You can play with the time interval until you find a number you're happy with. I personally never remove them.
 
-**conntrack.sh** will check your conntrack table and gives you a count and show you how many of your connections belong to relays. It will also list IP addresses that have more than 2 connections.
+**conntrack.sh** will check your conntrack table and gives you a count and shows you how many of your connections belong to relays. It will also list IP addresses that have more than 2 connections, sorted from the lowest number of connections to the highest.
 
-**update.sh** can be used to update your rules from a lower version to a higher one. It will also create a file named **update-rules.sh** which shows the rules in plain text for your review. It won't work after a reboot though. You must always run **multi.sh** after a reboot since all ipsets are removed upon reboot.
+**update.sh** can be used to update your rules from a lower version to a higher one or to simply refresh your rules in case you need to. It will also create a file named **update-rules.sh** which shows the rules in plain text for your review. It won't work after a reboot though. You must always run **multi.sh** or **rules.sh** after a reboot since all ipsets are removed upon reboot.
 
   
 # tor-ddos The long version
@@ -164,13 +152,14 @@ ipset create -exist allow-list hash:ip
 ipset create tor-$ipaddress-$ORPort hash:ip family inet hashsize 4096 timeout 43200
 iptables -t mangle -I PREROUTING -p tcp --destination $ipaddress --dport $ORPort -m set --match-set allow-list src -j ACCEPT
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m recent --name ddos-$ipaddress-$ORPort --set
-iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m set --match-set 4-or src -m connlimit --connlimit-mask 32 --connlimit-upto 4 -j ACCEPT
+iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m set --match-set 4-or src -m connlimit --connlimit-mask 32 --connlimit-upto 2 -j ACCEPT
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m set --match-set dual-or src -m connlimit --connlimit-mask 32 --connlimit-upto 2 -j ACCEPT
 iptables -t mangle -A PREROUTING -p tcp --syn --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-$ipaddress-$ORPort src
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 2 -j SET --add-set tor-$ipaddress-$ORPort src
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m set --match-set tor-$ipaddress-$ORPort src -j DROP
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -m connlimit --connlimit-mask 32 --connlimit-above 1 -j DROP
 iptables -t mangle -A PREROUTING -p tcp --destination $ipaddress --destination-port $ORPort -j ACCEPT
+iptables -I INPUT -p tcp --destination $ipaddress --destination-port $ORPort -m set --match-set tor-$ipaddress-$ORPort src -j REJECT --reject-with tcp-reset
 ```
 
 This is what the rules will do:
@@ -190,6 +179,7 @@ This is what the rules will do:
 - Drop any future attempts from those in the list for 12 hours.
 - Allow a maximum of one connection per IP to our ORPort for those not in our lists.
 - Accept everyone else.
+- Reject and close connections by IP addresses in the block list to clear their already established connections as soon as possible.
 
 That's it. Just remember, anytime you reload your firewall, all these iptables rules are erased. At least I'm sure that's what happens with firewall-cmd --reload. Also a reboot will reset your iptables rules to default rules that came with your system.  Nevertheless we save the original rules so we can restore them with the following command if anything goes wrong:
 

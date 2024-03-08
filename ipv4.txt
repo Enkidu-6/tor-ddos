@@ -1,4 +1,0 @@
-# This is a sample. Replace with your own IP address/addresses and remove this comment.
-10.50.50.51:443
-10.50.50.51:80
-10.55.55.55:444
