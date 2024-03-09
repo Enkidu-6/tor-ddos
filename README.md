@@ -1,3 +1,7 @@
+# How to combat Tor Relay DDoS in 10 Seconds!
+
+**It would be a good idea to follow [The main repository](https://github.com/Enkidu-6/tor-ddos) to be notified of any updates.**
+
 # Update
 If you're updating from a previous version, Use the same download command below. The script tries to determine if you've previously used these scripts by looking for ipv4.txt anywhere on your system and if it exists, it'll give you the choice to update or start fresh.
 
