@@ -93,15 +93,15 @@ chmod 0700 rules.sh
 ./rules.sh
 progress
 clear
-echo -e "\033[1;37m                                 All done!"
-echo -e "Look for a file named rules.sh in this directory. It contains all the rules that were applied for your reference."
-echo -e "From now on, as long as your IP addresses and ORPorts remain the same, you can run rules.sh instead of this script.\033[0m"
-sleep 5
-clear
-echo -e "\033[1;37mThis script will list the rules in your mangle table in 5 seconds"
-echo -e "You can check the rules and make sure they have been applied properly"
-echo -e "Press control c to stop .......\033[0m"
-sleep 7
+echo -e "\033[1;37m                                    All done!"; echo -e "\n"
+echo -e "Look for a file named rules.sh in this directory. It contains all the rules"
+echo -e "that were applied for your reference.From now on, as long as your IP addresses"
+echo -e "and ORPorts remain the same, you can run rules.sh instead of this script.\033[0m\n\n"
+echo -e "\033[1;37mThis script will now list the rules in your mangle table"
+echo -e "You can check the rules and make sure they have been applied properly\033[0m"
+echo -e "\033[1;37m"; read -rsn1 -p "Press any key when ready . . ."; echo -e "\033[0m\n"
 iptables -S -t mangle
-echo -e "\033[1;37mYou should check your ip6tables rules as well by typing ip6tables -S -t mangle"
-echo -e "Exiting ....\033[0m"
+echo -e "\033[1;37m\nDisplaying your ip6tables rules now.\033[0m"
+echo -e "\033[1;37m"; read -rsn1 -p "Press any key when ready . . ."; echo -e "\033[0m\n"
+ip6tables -S -t mangle
+echo -e "\nExiting ....\033[0m\n"
