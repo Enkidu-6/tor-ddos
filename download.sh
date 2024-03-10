@@ -3,7 +3,7 @@
 red='\033[0;31m'
 green='\033[1;32m'
 plain='\033[0m'
-wget -O tor.tar.gz https://github.com/Enkidu-6/tor-ddos/archive/refs/tags/v7.0.1.tar.gz
+wget -O tor.tar.gz https://github.com/Enkidu-6/tor-ddos/archive/refs/tags/v7.0.2.tar.gz
 mkdir tor
 tar -xzf tor.tar.gz -C tor --strip-components 1
 sleep 1

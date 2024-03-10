@@ -65,7 +65,9 @@ start() {
    read IP
    echo -e "\n${green}Enter your ORPort or comma separated multiple ORPorts (e.g. 443,80,8080):\n ${plain}"
    read OR
-   /bin/rm -r ipv4.txt
+   if [[ -f "ipv4.txt" ]]; then
+      /bin/rm -r ipv4.txt
+   fi
    IFS=","
    for v in $OR; do
       echo $IP:$v >>ipv4.txt
@@ -77,7 +79,9 @@ start() {
    [yY]*)
       echo -e "\n${green}enter your IPv6:\n ${plain}"
       read IP6
-      /bin/rm -r ipv6.txt
+      if [[ -f "ipv6.txt" ]]; then
+         /bin/rm -r ipv6.txt
+      fi
       for v in $OR; do
          echo [$IP6]:$v >>ipv6.txt
       done
