@@ -4,9 +4,10 @@ red='\033[0;31m'
 green='\033[1;32m'
 white='\033[1;37m'
 plain='\033[0m'
-wget -O tor.tar.gz https://github.com/Enkidu-6/tor-ddos/archive/refs/tags/v7.0.2.tar.gz
+wget -O tor.tar.gz https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/src/tor.tar.gz
 mkdir tor
-tar -xzf tor.tar.gz -C tor --strip-components 1
+tar -xzf tor.tar.gz -C tor
+/bin/rm -r tor.tar.gz
 sleep 1
 cd tor
 chmod 0700 *.sh

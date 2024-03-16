@@ -23,8 +23,6 @@ os() {
 
    if [[ "${release}" == "debian" ]] || [[ "${release}" == "ubuntu" ]]; then
       apt install -y conntrack ipset
-      /bin/rm -r conntrack.sh
-      mv conntrack-2.sh conntrack.sh
       ./multi.sh
    else
       ./multi.sh
