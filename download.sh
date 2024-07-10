@@ -5,8 +5,12 @@ green='\033[1;32m'
 white='\033[1;37m'
 plain='\033[0m'
 wget -O tor.tar.gz https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/src/tor.tar.gz
-mkdir tor
-tar -xzf tor.tar.gz -C tor
+if [[ -d tor ]]; then
+    tar -xzf tor.tar.gz -C tor
+else
+    mkdir tor
+    tar -xzf tor.tar.gz -C tor
+fi
 /bin/rm -r tor.tar.gz
 sleep 1
 cd tor
@@ -15,15 +19,19 @@ check() {
     FILE=$(find / -name ipv4.txt)
     FILE2=$(find / -name ipv6.txt)
     FILE3=$(find / -name "ipv*.txt")
-    if [[ $(ls -l $FILE | wc -l) -gt 1 || $(ls -l $FILE2 | wc -l) -gt 1 ]]; then
+    LINES=$(find / -name ipv4.txt | wc -l)
+    if [[ $LINES -eq 0 ]]; then
+        ./start.sh
+    fi
+    if [[ $(ls -l $FILE | wc -l) -gt 1 ]]; then
         echo -e "${green}Looks like you may have used these scripts before.${plain}"
         echo -e "\n${green}However, it seems that you have more than one ipv4.txt on your system${plain}"
         echo -e "\n${white}"
         ls $FILE | nl
-        cat $FILE | nl
         echo -e ""
-        ls $FILE2 | nl
-        cat $FILE2 | nl
+        if [ -f "$FILE2" ]; then
+            ls $FILE2 | nl
+        fi
         echo -e "${plain}"
         echo -e ""
         echo -e "${green}Please check the files and Keep only one copy of each ipv4.txt and ipv6.txt.${plain}"
@@ -36,7 +44,7 @@ check() {
             fi
         done
     fi
-    if [ -f "$FILE" ]; then
+    if [[ $(ls -l $FILE | wc -l) -eq 1 ]]; then
         echo -e "${green}Looks like you may have used these scripts before.${plain}"
         echo -e "${green}You can now upgrade to the new version and keep your block lists intact."
         read -p "Would you like to update your existing rules? <y/n> " prompt
@@ -45,7 +53,9 @@ check() {
         [yY]*)
             echo -e "\n${green}Great! This is what I found in your current IP files: ${plain}\n\n"
             echo -e "${white}$(cat $FILE) ${plain}\n"
-            echo -e "${white}$(cat $FILE2) ${plain}\n"
+            if [ -f "$FILE2" ]; then
+                echo -e "${white}$(cat $FILE2) ${plain}\n"
+            fi
             echo -e ${green}
             read -p "Are these values correct? <y/n> " response
             echo -e ${plain}

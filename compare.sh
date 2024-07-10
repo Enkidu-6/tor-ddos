@@ -27,10 +27,12 @@ for i in $(cat ipv4.txt | sed 's/:/-/'); do
       echo -e "${green}All Blocked Addresses in tor-$i:${white}"
       /usr/sbin/ipset -L tor-$i | grep 'Number' | awk '{ print $4 }'
       sleep 2
-      echo -e "${green}All relays in tor-$i:${white}"
-      perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/' /var/tmp/$i /var/tmp/file2
-      echo -e "${green}Relays with multiple Tor instances in tor-$i:${white}"
-      perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/' /var/tmp/$i /var/tmp/multi
+      echo -e "${blue}$(perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/' /var/tmp/$i /var/tmp/file2 | wc -l)${green} relays in tor-$i:${white}"
+      sleep 1
+      perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/' /var/tmp/$i /var/tmp/file2 | sort -n
+      echo -e "${blue}$(perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/' /var/tmp/$i /var/tmp/multi | wc -l)${green} relays with multiple Tor instances in tor-$i:${white}"
+      sleep 2
+      perl -ne 'print if ($seen{$_} .= @ARGV) =~ /10$/' /var/tmp/$i /var/tmp/multi | sort -n
 
       read -p "Remove All 'a'. Only the ones with multiple OR ports 'm'. Do Nothing 'n'  (a/m/n) " yn
 
