@@ -23,8 +23,6 @@ os() {
 
    if [[ "${release}" == "debian" ]] || [[ "${release}" == "ubuntu" ]]; then
       apt install -y conntrack ipset
-      /bin/rm -r conntrack.sh
-      mv conntrack-2.sh conntrack.sh
       ./multi.sh
    else
       ./multi.sh
@@ -65,7 +63,9 @@ start() {
    read IP
    echo -e "\n${green}Enter your ORPort or comma separated multiple ORPorts (e.g. 443,80,8080):\n ${plain}"
    read OR
-   /bin/rm -r ipv4.txt
+   if [[ -f "ipv4.txt" ]]; then
+      /bin/rm -r ipv4.txt
+   fi
    IFS=","
    for v in $OR; do
       echo $IP:$v >>ipv4.txt
@@ -77,7 +77,9 @@ start() {
    [yY]*)
       echo -e "\n${green}enter your IPv6:\n ${plain}"
       read IP6
-      /bin/rm -r ipv6.txt
+      if [[ -f "ipv6.txt" ]]; then
+         /bin/rm -r ipv6.txt
+      fi
       for v in $OR; do
          echo [$IP6]:$v >>ipv6.txt
       done
