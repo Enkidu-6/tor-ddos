@@ -22,7 +22,7 @@ os() {
    echo "The OS release is: $release"
 
    if [[ "${release}" == "debian" ]] || [[ "${release}" == "ubuntu" ]]; then
-      apt install -y conntrack ipset iptables
+      apt install -y conntrack ipset
       ./multi.sh
    else
       ./multi.sh
