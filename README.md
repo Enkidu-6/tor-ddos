@@ -19,7 +19,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/Enkidu-6/tor-ddos/main/downloa
 
 The script will download all the files of the current release to $PWD/tor directory and will take you through the necessary steps and then applies the iptables rules for you. You don't have to do anything except answering a few questions and you're done. You need to know your IPV4 and IPV6 addresses and ORPorts.
 
-If your OS is Ubuntu or Debian, the script will install conntrack utilities and ipset using apt as they don't come with them by default.
+If your OS is Ubuntu or Debian, the script will install conntrack utilities and ipset using apt as they don't come with them by default. New versions of Debian don't come with iptables or nft. For those OS versions iptables-nft will be installed using apt.
 
 You need iptables, ipset and curl on your system. If the script fails, Type iptables -V ipset -V and curl -V to find out if you have them. Getting them is as simple as installing them from your System's native package manager.
 
